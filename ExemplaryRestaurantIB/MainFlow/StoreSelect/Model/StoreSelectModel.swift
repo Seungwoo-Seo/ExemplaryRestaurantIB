@@ -1,0 +1,21 @@
+//
+//  StoreSelectModel.swift
+//  ExemplaryRestaurantIB
+//
+//  Created by 서승우 on 2022/09/19.
+//
+
+import Foundation
+import UIKit
+
+struct StoreSelectModel {
+ 
+    var businessTypeList: [String] = []
+    var currentBusinessType: String = ""
+    var nowGooType: (gooName: String, gooCode: String?) = ("", nil)
+    
+    var viewControllers: [UIViewController] = []
+    var storeList: [Store] = []
+    
+    
+}
