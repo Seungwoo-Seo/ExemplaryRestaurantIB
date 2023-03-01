@@ -62,7 +62,8 @@ class UserCreateViewController: UIViewController {
     
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
-        self.view.endEditing(true)
+        
+        vm.touchesBegan(touches, with: event, vc: self)
     }
     
     
@@ -118,9 +119,12 @@ private extension UserCreateViewController {
         
         emailTextField.delegate = self
         passwordTextField.delegate = self
+        passwordTextField.placeholder = "비밀번호는 8-20자 이내 영어, 숫자, 특수문자 포함"
         passwordAgainTextField.delegate = self
+        passwordAgainTextField.placeholder = "비밀번호는 8-20자 이내 영어, 숫자, 특수문자 포함"
         nameTextField.delegate = self
-                
+        nameTextField.placeholder = "한글만 가능"
+        
         emailOverlapCheckButton.isEnabled = false
     }
     

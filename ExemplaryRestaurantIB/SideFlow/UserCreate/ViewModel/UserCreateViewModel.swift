@@ -11,13 +11,20 @@ import FirebaseAuth
 import PromiseKit
 import Lottie
 
-
 class UserCreateViewModel {
     
     private var model = UserCreateModel()
     
     private var ref: DatabaseReference {
         return self.model.ref
+    }
+    
+}
+
+extension UserCreateViewModel {
+ 
+    func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?, vc: UserCreateViewController){
+        vc.view.endEditing(true)
     }
     
 }
@@ -32,17 +39,19 @@ extension UserCreateViewModel {
         if let email = model.email {
             self.ref.child("UserList").queryOrdered(byChild: "userEmail").queryEqual(toValue: email).observeSingleEvent(of: .value, with: { snapshot in
                 guard let _ = snapshot.value as? [String: Any] else {
-                    animationView.play(toFrame: 39) { _ in
-                        animationView.pause()
-                    }
                     
-                    let alert = Alert.confirmAlert(title: "사용 가능")
+                    let alert = Alert.confirmAlert(title: "사용 가능") { [weak animationView] in
+                        animationView?.isHidden = false
+                        animationView?.play(toFrame: 39) { _ in
+                            animationView?.pause()
+                        }
+                    }
                     self.model.emailState = true
                     completionHandler(alert)
                     return
                 }
             
-                animationView.stop()
+                animationView.isHidden = true
                 
                 let alert = Alert.confirmAlert(title: "중복된 아이디(이메일)입니다.")
                 self.model.emailState = false

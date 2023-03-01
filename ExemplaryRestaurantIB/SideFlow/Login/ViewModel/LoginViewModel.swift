@@ -58,7 +58,7 @@ extension LoginViewModel {
                     completionHandler(alert)
                     
                 case .passwordRegex:
-                    alert = Alert.confirmAlert(title: "비밀번호 형식이 틀렸습니다. 영어, 숫자, 특수문자를 조합하세요.")
+                    alert = Alert.confirmAlert(title: "비밀번호는 8-20자로 영어, 숫자, 특수문자로 이뤄져있습니다.")
                     completionHandler(alert)
                     
                 case .notEmail:

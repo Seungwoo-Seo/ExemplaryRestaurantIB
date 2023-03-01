@@ -76,6 +76,7 @@ private extension LoginViewController {
         emailTextField.delegate = self
         
         passwordTextField.tag = 1
+        passwordTextField.placeholder = "비밀번호는 8-20자 이내 영어, 숫자, 특수문자 포함"
         passwordTextField.delegate = self
         passwordTextField.isSecureTextEntry = true
     }

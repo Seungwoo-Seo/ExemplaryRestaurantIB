@@ -90,7 +90,7 @@ extension StandardViewModel {
                             
                             // json 서버용 만들기
 //                            print("\"\(store.uid!)\":", "{", "\"jjimCount\": 0,", "\"reviewCount\": 0,", "\"reviewAverage\": 0.0,", "\"reviewTotal\": 0", "},")
-//                            if store.uid == "3000000-101-1967-0325600102014010720150915" {
+//                            if store.uid == "3000000-101-1974-0572201442016100420161205" {
 //                                print(store.name)
 //                            }
                             

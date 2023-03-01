@@ -100,7 +100,7 @@ class MyChangeCell1: UITableViewCell {
     
     lazy var newPasswordTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "8-20자 이내"
+        textField.placeholder = "비밀번호는 8-20자 이내 영어, 숫자, 특수문자가 포함되어야 합니다."
         textField.borderStyle = .roundedRect
         textField.font = .systemFont(ofSize: 14.0, weight: .regular)
         textField.isSecureTextEntry = true

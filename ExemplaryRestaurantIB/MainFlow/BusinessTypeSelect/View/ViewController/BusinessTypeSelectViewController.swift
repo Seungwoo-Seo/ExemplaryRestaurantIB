@@ -107,8 +107,8 @@ extension BusinessTypeSelectViewController: UICollectionViewDataSource, UICollec
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        vm.collectionView(collectionView, didSelectItemAt: indexPath) { [weak self] vc in
-            self?.navigationController?.pushViewController(vc, animated: true)
+        vm.collectionView(collectionView, didSelectItemAt: indexPath) {
+            self.navigationController?.pushViewController($0, animated: true)
         }
     }
     
