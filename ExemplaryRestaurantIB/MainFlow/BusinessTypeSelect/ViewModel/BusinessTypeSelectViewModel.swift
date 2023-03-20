@@ -10,21 +10,8 @@ import SnapKit
 
 class BusinessTypeSelectViewModel {
     
-    // MARK: Standard ViewModel
-    private let shared = StandardViewModel.shared
-    
-    
     // MARK: Model
     private var model = BusinessTypeSeletModel()
-    
-    
-    private var businessTypeList: [String] {
-        return self.model.businessTypeList
-    }
-    
-    private var businessTypeImageList: [String: String] {
-        return self.model.businessTypeImageList
-    }
     
     private var gooTypeList: [(gooName: String, gooCode: String?)] {
         return self.model.gooTypeList
@@ -34,26 +21,242 @@ class BusinessTypeSelectViewModel {
         return self.model.nowGooType
     }
     
-    
-    
-    init() {
-        NotificationCenter.default.addObserver(forName: NSNotification.Name("fetchDataCompleted"), object: nil, queue: nil) { [weak self] notification in
-            self?.createModel_businessTypeList()
-            
-            NotificationCenter.default.post(name: NSNotification.Name("completedReload"), object: nil)
+    func setupNotification(_ collectionView: UICollectionView) {
+        NotificationCenter.default.addObserver(forName: NSNotification.Name("fetchDataCompleted"), object: nil, queue: nil) { _ in
+            DispatchQueue.main.async {
+                self.createModel_businessTypeList()
+                collectionView.reloadData()
+            }
         }
     }
     
 }
 
-// MARK: model crud
+// MARK: action
 extension BusinessTypeSelectViewModel {
+
+    func didTapMyButton(_ sender: UIBarButtonItem, completionHandler: (MyViewController) -> ()) {
+        guard let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyViewController") as? MyViewController else {return}
+        
+        completionHandler(vc)
+    }
+    
+    func didTapGooSelectButton(_ sender: UIButton,
+                               navigationItem: UINavigationItem,
+                               view: UIView,
+                               hazyView: HazyView,
+                               gooSelectView: GooSelectView) {
+        
+        navigationItem.leftBarButtonItems?.forEach { $0.isEnabled = false }
+        navigationItem.rightBarButtonItems?.forEach { $0.isEnabled = false }
+        
+        gooSelectView.snp.remakeConstraints { make in
+            make.height.equalToSuperview().multipliedBy(0.6)
+            make.leading.trailing.bottom.equalToSuperview()
+        }
+        
+        UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: {
+            hazyView.alpha = 0.5
+            view.layoutIfNeeded()
+        })
+        
+    }
+    
+    func didTapNavigationBar(_ sender: UINavigationBar,
+                             navigationItem: UINavigationItem,
+                             view: UIView,
+                             hazyView: HazyView,
+                             gooSelectView: GooSelectView) {
+        
+        navigationItem.leftBarButtonItems?.forEach { $0.isEnabled = true }
+        navigationItem.rightBarButtonItems?.forEach { $0.isEnabled = true }
+        
+        gooSelectView.snp.remakeConstraints { make in
+            make.height.equalTo(0)
+            make.leading.trailing.bottom.equalToSuperview()
+        }
+        
+        UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: {
+            hazyView.alpha = 0.0
+            view.layoutIfNeeded()
+        })
+    }
+    
+}
+
+// MARK: searchBar
+extension BusinessTypeSelectViewModel {
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar, completionHandler: (SearchViewController) -> ()) {
+        searchBar.endEditing(true)
+        
+        guard let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SearchViewController") as? SearchViewController else {return}
+        
+        completionHandler(vc)
+    }
+}
+
+// MARK: BottomSheetDelegate
+extension BusinessTypeSelectViewModel {
+    
+    func didTapHazyView(_ tapGesture: UITapGestureRecognizer,
+                        vc: BusinessTypeSelectViewController) {
+        
+        vc.navigationItem.leftBarButtonItems?.forEach { $0.isEnabled = true }
+        vc.navigationItem.rightBarButtonItems?.forEach { $0.isEnabled = true }
+
+        
+        vc.gooSelectView.snp.remakeConstraints { make in
+            make.height.equalTo(0)
+            make.leading.trailing.bottom.equalToSuperview()
+        }
+        
+        UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: { [weak vc] in
+            vc?.hazyView.alpha = 0.0
+        })
+    }
+    
+    func didTapCancelButton(_ button: UIButton,
+                            vc: BusinessTypeSelectViewController) {
+        
+        vc.navigationItem.leftBarButtonItems?.forEach { $0.isEnabled = true }
+        vc.navigationItem.rightBarButtonItems?.forEach { $0.isEnabled = true }
+        
+        vc.gooSelectView.snp.remakeConstraints { make in
+            make.height.equalTo(0)
+            make.leading.trailing.bottom.equalToSuperview()
+        }
+        
+        UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: { [weak vc] in
+            vc?.hazyView.alpha = 0.0
+        })
+    }
+    
+    func didTapTableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath, vc: BusinessTypeSelectViewController) {
+        let nowGooType = model.gooTypeList[indexPath.row]
+        updateModel_nowGooType(nowGooType: nowGooType)
+        
+        vc.navigationItem.leftBarButtonItems?.forEach { $0.isEnabled = true }
+        vc.navigationItem.rightBarButtonItems?.forEach { $0.isEnabled = true }
+        
+        vc.gooSelectView.snp.remakeConstraints { make in
+            make.height.equalTo(0)
+            make.leading.trailing.bottom.equalToSuperview()
+        }
+        
+        UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: { [weak vc] in
+            vc?.hazyView.alpha = 0.0
+            vc?.view.layoutIfNeeded()
+        }) { _ in
+            DispatchQueue.main.async { [weak vc] in
+                tableView.reloadData()
+                vc?.collectionView.reloadData()
+                vc?.headerView.gooSelectButton.setTitle(nowGooType.gooName, for: .normal)
+            }
+        }
+    }
+    
+}
+
+// MARK: collectionView
+extension BusinessTypeSelectViewModel {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
+        return model.businessTypeList.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BusinessTypeCell", for: indexPath) as? BusinessTypeCell else {return UICollectionViewCell()}
+        
+        let businessType = model.businessTypeList[indexPath.item]
+        let imageName = model.businessTypeImageList[businessType] ?? ""
+        
+        cell.businessTypeImageView.image = UIImage(named: imageName)
+        cell.businessTypeLabel.text = businessType
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath, completionHandler: (StoreSelectContainerViewController) -> ()) {
+        
+        guard let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "StoreSelectContainerViewController") as? StoreSelectContainerViewController else {return}
+        
+        let businessTypeList = model.businessTypeList
+        let currentBusinessType = businessTypeList[indexPath.item]
+        let nowGooType = model.nowGooType
+        
+        vc.vm.createModel(businessTypeList: businessTypeList,
+                          currentBusinessType: currentBusinessType,
+                          nowGooType: nowGooType)
+        
+        completionHandler(vc)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        let itemSpacing: CGFloat = 10
+        let inset: CGFloat = 10
+        let width: CGFloat = (collectionView.frame.width - inset*2 - itemSpacing*2) / 3
+        let height: CGFloat = width
+        
+        return CGSize(width: width, height: height)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
+        guard let cell = collectionView.cellForItem(at: indexPath) as? BusinessTypeCell else {return}
+                    
+        UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 3, options: [.curveLinear], animations: { cell.transform = CGAffineTransform(scaleX: 0.95, y: 0.95) })
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath) {
+        guard let cell = collectionView.cellForItem(at: indexPath) as? BusinessTypeCell else {return}
+                    
+        UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 3, options: [.curveLinear], animations: { cell.transform = CGAffineTransform(scaleX: 1, y: 1) })
+    }
+    
+}
+
+// MARK: gooSelectView.tableView
+extension BusinessTypeSelectViewModel {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return gooTypeList.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "GooTypeCell", for: indexPath) as? GooTypeCell else {return UITableViewCell()}
+        
+        cell.gooTypeLabel.text = gooTypeList[indexPath.row].gooName
+        
+        if cell.gooTypeLabel.text == model.nowGooType.gooName {
+            cell.gooTypeLabel.textColor = .systemBlue
+            let image = UIImage(systemName: "checkmark")
+            let checkmark  = UIImageView(frame:CGRect(x:0, y:0, width:(image?.size.width)!, height:(image?.size.height)!));
+            checkmark.image = image
+            checkmark.tintColor = UIColor.systemBlue
+            
+            cell.accessoryView = checkmark
+        }
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let nowGooType = model.gooTypeList[indexPath.row]
+        updateModel_nowGooType(nowGooType: nowGooType)
+    }
+        
+}
+
+// MARK: model crud
+private extension BusinessTypeSelectViewModel {
     
     // MARK: create
     func createModel_businessTypeList() {
-        guard !shared.storeList.isEmpty else {return}
+        guard !StandardViewModel.shared.storeList.isEmpty else {return}
         
-        let businessTypeList = shared.storeList.map { store in
+        let businessTypeList = StandardViewModel.shared.storeList.map { store in
             return store.businessType
         }
         
@@ -90,115 +293,18 @@ extension BusinessTypeSelectViewModel {
         // 예를 들어서
         guard let gooCode = nowGooType.gooCode else {
             createModel_businessTypeList()
-            self.model.nowGooType = nowGooType
+            model.nowGooType = nowGooType
             return
         }
         
         // 지금 선택한게 은평구야
         // ("은평구", 3030490349)
-        let storeList = shared.storeList.filter { store in
+        let storeList = StandardViewModel.shared.storeList.filter { store in
             store.gooCode == gooCode
         }
         
         updateModel_businessTypeList(storeList: storeList)
-        
-        self.model.nowGooType = nowGooType
-    }
-    
-}
-
-
-extension BusinessTypeSelectViewModel {
-    
-    func addObserver(_ collectionView: UICollectionView) {
-        NotificationCenter.default.addObserver(forName: NSNotification.Name("completedReload"), object: nil, queue: nil) { _ in
-            DispatchQueue.main.async {
-                collectionView.reloadData()
-            }
-        }
-    }
-    
-}
-
-
-// MARK: collectionView configure
-extension BusinessTypeSelectViewModel {
-    
-    func configure_collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
-        return businessTypeList.count
-    }
-    
-    func configure_collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BusinessTypeCell", for: indexPath) as? BusinessTypeCell else {return UICollectionViewCell()}
-        
-        let businessType = businessTypeList[indexPath.item]
-        let imageName = businessTypeImageList[businessType] ?? ""
-        
-        cell.businessTypeImageView.image = UIImage(named: imageName)
-        cell.businessTypeLabel.text = businessType
-        
-        return cell
-    }
-    
-    func configure_collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath, completionHandler: (StoreSelectContainerViewController)->()) {
-        
-        guard let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "StoreSelectContainerViewController") as? StoreSelectContainerViewController else {return}
-        
-        vc.vm.createModel(businessTypeList: self.businessTypeList,
-                          currentBusinessType: businessTypeList[indexPath.item],
-                          nowGooType: self.nowGooType)
-        
-        completionHandler(vc)
-    }
-    
-    func configure_collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        let itemSpacing: CGFloat = 10
-        let inset: CGFloat = 10
-        let width: CGFloat = (collectionView.frame.width - inset*2 - itemSpacing*2) / 3
-        let height: CGFloat = width
-        
-        return CGSize(width: width, height: height)
-    }
-    
-}
-
-// MARK: tableView configure
-extension BusinessTypeSelectViewModel {
-    
-    func configure_tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return gooTypeList.count
-    }
-    
-    func configure_tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath, headerView: BusinessTypeSelectHeaderView) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "GooTypeCell", for: indexPath) as? GooTypeCell else {return UITableViewCell()}
-        
-        cell.gooTypeLabel.text = gooTypeList[indexPath.row].gooName
-        
-        if headerView.gooSelectButton.titleLabel?.text == cell.gooTypeLabel.text {
-            cell.gooTypeLabel.textColor = .systemBlue
-            let image = UIImage(systemName: "checkmark")
-            let checkmark  = UIImageView(frame:CGRect(x:0, y:0, width:(image?.size.width)!, height:(image?.size.height)!));
-            checkmark.image = image
-            checkmark.tintColor = UIColor.systemBlue
-            
-            cell.accessoryView = checkmark
-        }
-        
-        return cell
-    }
-    
-    func configure_tableView(_ tableView: UITableView,
-                             didSelectRowAt indexPath: IndexPath,
-                             hideView: () -> (),
-                             completion: (String) -> ()) {
-
-        let nowGooType = gooTypeList[indexPath.row]
-        self.updateModel_nowGooType(nowGooType: nowGooType)
-        hideView()
-        tableView.reloadData()
-        completion(nowGooType.gooName)
+        model.nowGooType = nowGooType
     }
     
 }

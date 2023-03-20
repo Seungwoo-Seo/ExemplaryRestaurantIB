@@ -19,11 +19,7 @@ class StandardViewModel {
     private var model = StandardModel()
     
     
-    // MARK: Computed Property
-    private var gooUrlList: [(String, String)] {
-        return self.model.gooUrlList
-    }
-    
+    // MARK: Computed
     var storeList: [Store] {
         return self.model.storeList
     }
@@ -31,29 +27,16 @@ class StandardViewModel {
     // MARK: Init
     private init() {}
     
-    func createModel_storeList(storeList: [Store]) {
-        self.model.storeList = storeList
-    }
-    
 }
 
 // MARK: fetch
 extension StandardViewModel {
-    
-    func fetchData_makeUid(_ strings: String...) -> String {
-        var uid = ""
-        for string in strings {
-            uid += string.trimmingCharacters(in: .whitespaces)
-        }
-        return uid
-    }
-
 
     func fetchData() {
         let group = DispatchGroup()
         var storeList: [Store] = []
         
-        for (gooURL, goo) in self.gooUrlList {
+        for (gooURL, goo) in model.gooUrlList {
             group.enter()
             // 1000까지 보내는 이유
             // ERROR-336 - 데이터요청은 한번에 최대 1000건을 넘을 수 없습니다.
@@ -90,6 +73,8 @@ extension StandardViewModel {
                                                              signUpDay,
                                                              assignationSelectedDay)
                             
+
+                            
                             let store = Store(gooCode: gooCode,
                                               assignationNumber: assignationNumber,
                                               signUpDay: signUpDay,
@@ -102,6 +87,12 @@ extension StandardViewModel {
                                               mainMenu: mainMenu,
                                               phoneNumber: phoneNumber,
                                               uid: uid)
+                            
+                            // json 서버용 만들기
+//                            print("\"\(store.uid!)\":", "{", "\"jjimCount\": 0,", "\"reviewCount\": 0,", "\"reviewAverage\": 0.0,", "\"reviewTotal\": 0", "},")
+//                            if store.uid == "3000000-101-1967-0325600102014010720150915" {
+//                                print(store.name)
+//                            }
                             
                             storeList.append(store)
                         }
@@ -116,31 +107,37 @@ extension StandardViewModel {
         
         group.notify(queue: .main) { [weak self] in
             guard let self = self else {return}
-            self.createModel_storeList(storeList: storeList)
-            print(self.model.storeList.count)
             
+            self.model.storeList = storeList
+       
+            print(self.model.storeList.count)
+       
             NotificationCenter.default.post(name: NSNotification.Name("fetchDataCompleted"), object: nil)
         }
         
-        
     } // fetchData
     
-    
-    
-    ////                        print("\"\(store.identifier!)\"", ":", "{", "\"jjimCount\"", ":", "0", ",", "\"reviewCount\"", ":", "0", "}", ",");
-    
-    ////        // 중복이 없다는 증명 ----------------------------------------------------------------
-    ////        print(storeList.count)
-    ////
-    ////        var testSet: Set<String> = []
-    ////
-    ////        for store in storeList {
-    ////            testSet.insert(store.identifier!)
-    ////        }
-    ////
-    ////        print(testSet.count)
-    ////        // --------------------------------------------------------------------------------
+    func fetchData_makeUid(_ strings: String...) -> String {
+        var uid = ""
+        for string in strings {
+            uid += string.trimmingCharacters(in: .whitespaces)
+        }
+        return uid
+    }
     
 }
 
-
+// LodingView
+extension StandardViewModel {
+    
+    func startLoding(_ lodingView: LodingView, activityView: UIActivityIndicatorView) {
+        lodingView.alpha = 1.0
+        activityView.startAnimating()
+    }
+    
+    func stopLoding(_ lodingView: LodingView, activityView: UIActivityIndicatorView) {
+        lodingView.alpha = 0.0
+        activityView.stopAnimating()
+    }
+    
+}

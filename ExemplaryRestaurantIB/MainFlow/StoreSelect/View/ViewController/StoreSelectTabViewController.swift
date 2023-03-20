@@ -15,8 +15,20 @@ class StoreSelectTabViewController: TabmanViewController {
     // MARK: View
     lazy var tabmanBar: TMBarView<TMHorizontalBarLayout, TMLabelBarButton, TMLineBarIndicator> = {
         let bar = TMBar.ButtonBar()
+        bar.layout.transitionStyle = .snap
+        bar.layout.contentInset = UIEdgeInsets(top: 0.0, left: 10.0, bottom: 0.0, right: 10.0)
+        
         return bar
     }()
+    
+    lazy var lodingView: LodingView = {
+        let view = LodingView(frame: .zero)
+        view.alpha = 0.0
+        view.backgroundColor = .white
+        
+        return view
+    }()
+    
     
     // MARK: View Model
     let vm = StoreSelectViewModel()
@@ -27,22 +39,12 @@ class StoreSelectTabViewController: TabmanViewController {
         super.viewDidLoad()
 
         setupUI()
+        setupLayout()
     }
     
 }
 
-private extension StoreSelectTabViewController {
-    
-    func setupUI() {
-        addBar(tabmanBar, dataSource: self, at: .top)
-        
-        self.tabmanBar.layout.transitionStyle = .snap
-        self.dataSource = self
-    }
-    
-}
-
-// MARK: Tabman, Pageboy API
+// MARK: Tabman, Pageboy
 extension StoreSelectTabViewController: PageboyViewControllerDataSource, TMBarDataSource {
     
     func numberOfViewControllers(in pageboyViewController: PageboyViewController) -> Int {
@@ -67,3 +69,19 @@ extension StoreSelectTabViewController: PageboyViewControllerDataSource, TMBarDa
         
 }
 
+private extension StoreSelectTabViewController {
+    
+    func setupUI() {
+        self.dataSource = self
+        addBar(tabmanBar, dataSource: self, at: .top)
+    }
+    
+    func setupLayout() {
+        [lodingView].forEach { view.addSubview($0) }
+        
+        lodingView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+    }
+    
+}

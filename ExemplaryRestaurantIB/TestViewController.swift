@@ -6,46 +6,30 @@
 //
 
 import UIKit
-import FirebaseStorage
+import SnapKit
+import RxSwift
+import Kingfisher
 
 class TestViewController: UIViewController {
+        
+    @IBOutlet var imageView: UIImageView!
     
-    @IBOutlet weak var imageView: UIImageView!
+    let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        test_storage()
+        Observable.from([1,2,3,4,5])
+            .subscribe(onNext: { num in
+                print(num)
+            }, onCompleted: {
+                print("completed")
+            })
+            .disposed(by: disposeBag)
+        
+        
+        let url = URL(string: "https://firebasestorage.googleapis.com:443/v0/b/exemplaryrestaurantibserver.appspot.com/o/ReviewImageList%2F-NM_fGgvSEeazIiNJ9_M%2Fimage1?alt=media&token=12c5ad1d-0aad-4d9a-9653-ee30f6b44edc")
+        imageView.kf.setImage(with: url)
     }
-    
-    func test_storage() {
-        let path = Storage.storage().reference().child("adfadfadf")
-        
-        path.listAll { result, error in
-            if let error = error {
-                print(error.localizedDescription)
-            } else {
-                
-            }
-        }
-        
-        path.getData(maxSize: 1 * 1024 * 1024) { [weak self] data, error in
-            if let error = error {
-                print(error.localizedDescription)
-            } else {
-                
-                guard let data = data else {
-                    print("데이터 없음")
-                    return}
-                
-                let image = UIImage(data: data)
-                self?.imageView.image = image
-            }
-            
-        }
-        
-        
-    }
-    
     
 }

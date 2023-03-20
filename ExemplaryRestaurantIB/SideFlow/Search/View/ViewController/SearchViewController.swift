@@ -8,44 +8,71 @@ import UIKit
 
 class SearchViewController: UIViewController {
     
-    // MARK: View
-    var resultsTableController: ResultTableViewController? // 검색 결과 보여줄 컨트롤러
-    var searchController: UISearchController? // 검색 컨트롤로
+    // 검색 컨트롤러
+    lazy var searchController: UISearchController = {
+        let vc = UISearchController(searchResultsController: resultsTableController)
+        
+        return vc
+    }()
+    
+    lazy var resultsTableController: UITableViewController = {
+        let vc = UITableViewController(style: .plain)
+        vc.tableView.delegate = self
+        vc.tableView.dataSource = self
+       
+        return vc
+    }()
     
     
     // MARK: ViewModel
-    let viewModel = SearchViewModel()
+    let vm = SearchViewModel()
     
+    
+    // MARK: Life Cycles
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        print(navigationController != nil)
         
         setupUI()
         setupLayout()
         
-        viewModel.setupStoresPropertys()
+        vm.viewDidLoad()
     }
     
 }
 
 extension SearchViewController: UISearchResultsUpdating {
     
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        return false
+    }
+    
     func updateSearchResults(for searchController: UISearchController) {
         
-        guard let vc = searchController.searchResultsController as? ResultTableViewController else {return}
+        vm.updateSearchResults(for: searchController) { vc in
+            vc.tableView.reloadData()
+        }
+    }
+    
+}
+
+extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        guard let text = searchController.searchBar.text?.lowercased() else { return }
+        return vm.tableView(tableView, numberOfRowsInSection: section)
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let filteringStoresPropertys = viewModel.storesPropertys.filter { $0.0.lowercased().contains(text) }
+        return vm.tableView(tableView, cellForRowAt: indexPath)
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        // 이걸 넘기면
-        
-        vc.viewModel.setupFilteringStoresPropertys(filteringStoresPropertys: filteringStoresPropertys)
-        
-        viewModel.setupFilteringStoresPropertys(filteringStoresPropertys: filteringStoresPropertys)
-        
-        vc.tableView.reloadData()
+        vm.tableView(tableView, didSelectRowAt: indexPath) { [weak self] vc in
+            self?.navigationController?.pushViewController(vc, animated: true)
+        }
     }
     
 }
@@ -53,47 +80,16 @@ extension SearchViewController: UISearchResultsUpdating {
 private extension SearchViewController {
     
     func setupUI() {
-        setupResultTableViewController()
-        setupSearchController()
+        // navigation
+        self.navigationItem.backButtonTitle = ""
+        navigationItem.hidesSearchBarWhenScrolling = false
         
+        // searchController
+        searchController.searchResultsUpdater = self
     }
     
     func setupLayout() {
-        
-    }
-    
-    // 하위 뷰
-    func setupResultTableViewController() {
-        resultsTableController = storyboard?.instantiateViewController(withIdentifier: "ResultTableViewController") as? ResultTableViewController
-        resultsTableController?.tableView.delegate = self
-    }
-    
-    // 서치 컨트롤러
-    func setupSearchController() {
-        searchController = UISearchController(searchResultsController: resultsTableController)
-        searchController?.searchResultsUpdater = self
-        
         navigationItem.searchController = searchController
-        navigationItem.hidesSearchBarWhenScrolling = false
-    }
-    
-    
-    
-}
-
-extension SearchViewController: UITableViewDelegate {
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        let storePropertys = viewModel.filteringStoresPropertys[indexPath.row]
-//        let store = viewModel.setupResultStore(storePropertys: storePropertys)
-        
-        
-        guard let vc = storyboard?.instantiateViewController(withIdentifier: "StoreViewController") as? StoreInfoViewController else {return}
-        
-//        vc.vm.createModel_store(store: store)
-    
-        navigationController?.pushViewController(vc, animated: true)
     }
     
 }

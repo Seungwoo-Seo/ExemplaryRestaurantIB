@@ -32,7 +32,7 @@ struct Store: Decodable {
     let phoneNumber: String?
     // 고유 id
     let uid: String?
-
+    
 }
 
 

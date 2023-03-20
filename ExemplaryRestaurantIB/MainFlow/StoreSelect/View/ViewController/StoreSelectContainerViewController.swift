@@ -25,9 +25,21 @@ class StoreSelectContainerViewController: UIViewController {
     // MARK: Override method
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        vm.prepare(for: segue,
-                   sender: sender,
-                   vm: self.vm)
+        vm.prepare(segue, sender: sender) { alert in
+            guard let alert = alert else {return}
+            self.present(alert, animated: true)
+        }
+    
+    }
+}
+
+extension StoreSelectContainerViewController: UITabBarDelegate {
+    
+    func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
+        
+        vm.tabBar(tabBar, didSelect: item) { vc in
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
     }
     
 }
@@ -35,45 +47,10 @@ class StoreSelectContainerViewController: UIViewController {
 private extension StoreSelectContainerViewController {
     
     func setupUI() {
+        self.navigationItem.backButtonTitle = ""
         self.tabBar.delegate = self
     }
     
 }
-
-extension StoreSelectContainerViewController: UITabBarDelegate {
-    
-    func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-        guard let title =  item.title else {return}
-        
-        switch title {
-        case "검색":
-            guard let vc = storyboard?.instantiateViewController(withIdentifier: "SearchViewController") as? SearchViewController else {return}
-            print("실행")
-            
-            navigationController?.pushViewController(vc, animated: true)
-            
-        case "찜":
-            guard let vc = storyboard?.instantiateViewController(withIdentifier: "JjimViewController") as? JjimViewController else {return}
-        
-            navigationController?.pushViewController(vc, animated: true)
-            
-        case "리뷰내역":
-            guard let vc = storyboard?.instantiateViewController(withIdentifier: "ReviewViewController") as? ReviewViewController else {return}
-            
-            navigationController?.pushViewController(vc, animated: true)
-            
-        case "My":
-            guard let vc = storyboard?.instantiateViewController(withIdentifier: "MyViewController") as? MyViewController else {return}
-            
-            navigationController?.pushViewController(vc, animated: true)
-            
-        default:
-            print(title)
-        }
-    }
-    
-}
-
-
 
 

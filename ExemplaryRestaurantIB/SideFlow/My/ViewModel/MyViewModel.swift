@@ -8,6 +8,7 @@
 import Foundation
 import FirebaseDatabase
 import FirebaseAuth
+import PromiseKit
 
 class MyViewModel {
  
@@ -20,41 +21,127 @@ class MyViewModel {
     private var handle: AuthStateDidChangeListenerHandle? {
         return self.model.handle
     }
-    
-    var userUID: String? {
-        return self.model.userUID
-    }
-    
+        
 }
 
 // MARK: model
 extension MyViewModel {
     
-    // MARK: create
-    func createModel_handle(completinoHandler: @escaping (Bool) -> ()) {
-        self.model.handle = Auth.auth().addStateDidChangeListener { [weak self] auth, user in
-            guard let user = user else {
-                completinoHandler(false)
-                return
+    func viewWillAppear(_ changeLabel: UILabel) {
+//        do {
+//            try Auth.auth().signOut()
+//        } catch {
+//            print("일로온다잉")
+//        }
+//        
+        firstly {
+            self.addStateDidChangeListener()
+        }.then { userUID in
+            self.readFIR_UserList(userUID)
+        }.done { userName in
+            if let userName = userName {
+                changeLabel.text = "\(userName)님 반갑습니다."
+            } else {
+                changeLabel.text = "로그인을 해주세요."
             }
+        }.catch { error in
             
-            let userUID = user.uid
-            self?.createModel_userUID(userUID: userUID)
-            completinoHandler(true)
         }
     }
     
-    func createModel_userUID(userUID: String) {
-        self.model.userUID = userUID
+    private func addStateDidChangeListener() -> Promise<String?> {
+        return Promise { seal in
+            self.model.handle = Auth.auth().addStateDidChangeListener { _, user in
+                guard let user = user else {
+                    self.model.userUID = nil
+                    seal.fulfill(nil)
+                    return
+                }
+                
+                let userUID = user.uid
+                self.model.userUID = userUID
+                
+                seal.fulfill(userUID)
+            }
+        }
     }
     
-    // MARK: delete
-    func deleteModel_handle() {
+    private func readFIR_UserList(_ userUID: String?) -> Promise<String?> {
+        return Promise { seal in
+            guard let userUID = userUID else {seal.fulfill(nil); return}
+            
+            self.ref.child("UserList").child(userUID).getData { error, snapshot in
+                if let _ = error {
+                    
+                } else {
+                    guard let value = snapshot?.value as? [String: Any] else {return}
+                    
+                    let userName = value["userName"] as! String
+                    self.model.userName = userName
+                    
+                    seal.fulfill(userName)
+                }
+            }
+        }
+    }
+
+    func removeStateDidChangeListener() {
         Auth.auth().removeStateDidChangeListener(handle!)
     }
     
-    func deleteModel_userUID() {
-        self.model.userUID = nil
+}
+
+// MARK: MyViewController.tableView
+extension MyViewModel {
+    
+    enum PushOrPresent {
+        case push
+        case present
+    }
+        
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath, completionHandler: (UIViewController, PushOrPresent) -> ()) {
+        
+        let cell = tableView.cellForRow(at: indexPath)
+        
+        if let _ = self.model.userUID {
+            switch cell {
+            case is Cell0:
+                guard let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyChangeViewController") as? MyChangeViewController else {return}
+                completionHandler(vc, .push)
+                
+            case is Cell1:
+                guard let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "JjimViewController") as? JjimViewController else {return}
+                completionHandler(vc, .push)
+                
+            case is Cell2:
+                guard let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "UserReviewViewController") as? UserReviewViewController else {return}
+                completionHandler(vc, .push)
+                
+            default:
+                let alert = Alert.confirmAlert(title: "준비중")
+                completionHandler(alert, .present)
+            }
+        } else {
+            switch cell {
+            case is Cell0:
+                guard let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoginViewController") as? LoginViewController else {return}
+                vc.modalPresentationStyle = .fullScreen
+                completionHandler(vc, .present)
+            
+            case is Cell1:
+                let alert = Alert.confirmAlert(title: "로그인 시 이용 가능합니다.")
+                completionHandler(alert, .present)
+                
+            case is Cell2:
+                let alert = Alert.confirmAlert(title: "로그인 시 이용 가능합니다.")
+                completionHandler(alert, .present)
+                
+            default:
+                let alert = Alert.confirmAlert(title: "준비중")
+                completionHandler(alert, .present)
+                
+            }
+        }
     }
     
 }
@@ -62,97 +149,11 @@ extension MyViewModel {
 // MARK: ref
 extension MyViewModel {
     
-    // MARK: read
-    func readRef_userName(completionHandler: @escaping (String) -> ()) {
-        guard let userUID = self.userUID else {return}
-        self.ref.child(userUID).child("userName").getData { error, snapshot in
-            if error != nil {
-                print(error!.localizedDescription)
-            } else {
-                let userName = snapshot?.value as? String ?? "Unknown 이름이 없습니다."
-                completionHandler(userName)
-            }
-        }
-    }
-    
-    func readRef_userInfo(completionHandler: @escaping ([String: String]) -> ()) {
-        guard let userUID = self.userUID else {return}
-        
-        self.ref.child(userUID).getData { error, snapshot in
-            if error != nil {
-                print(error!.localizedDescription)
-            } else {
-                if let value = snapshot?.value as? [String: String] {
-                    completionHandler(value)
-                }
-            }
-        }
-    }
-    
-    // MARK: update
-    func updateRef_userName(name: String) {
-        guard let userUID = self.userUID else {return}
-        
-        self.ref.child(userUID).updateChildValues(["userName": name])
-    }
-    
-    func updateRef_userCellphone(cellphone: String) {
-        guard let userUID = self.userUID else {return}
-        
-        self.ref.child(userUID).updateChildValues(["userCellphone": cellphone])
-    }
-    
     // MARK: delete
     func deleteRef_user() {
-        guard let userUID = self.userUID else {return}
+        guard let userUID = self.model.userUID else {return}
         
-        self.ref.child(userUID).removeValue()
+        self.ref.child("UserList").child(userUID).removeValue()
     }
     
-}
-
-
-// MARK: auth
-extension MyViewModel {
-    
-    func auth_updatePassword(email: String,
-                             nowPassword: String,
-                             newPassword: String) {
-        
-        Auth.auth().signIn(withEmail: email, password: nowPassword) { authResult, error in
-            if error != nil {
-                print("\(error!.localizedDescription)")
-            } else {
-                Auth.auth().currentUser?.updatePassword(to: newPassword) { error in
-                    if let error = error {
-                        print("\(error.localizedDescription)")
-                    }
-                    
-                    print("성공")
-                }
-            }
-        }
-    }
-    
-    func auth_signOut(completionHandler: @escaping () -> ()) {
-        do {
-            try Auth.auth().signOut()
-            completionHandler()
-        } catch {
-            print("\(error.localizedDescription)")
-        }
-    }
-    
-    func auth_userDelete(completionHandler: @escaping () -> ()) {
-        let user = Auth.auth().currentUser
-        
-        user?.delete { [weak self] error in
-            if let error = error {
-                print(error)
-            }
-            
-            self?.deleteRef_user()
-            completionHandler()
-        }
-    }
 }

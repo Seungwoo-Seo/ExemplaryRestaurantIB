@@ -10,29 +10,14 @@ import CoreLocation
 import FirebaseDatabase
 import FirebaseAuth
 import FirebaseStorage
+import PromiseKit
+import SnapKit
+import Kingfisher
 
 class StoreInfoViewModel {
     
     // MARK: model
     private var model = StoreInfoModel()
-    
-    // MARK: computed property
-    var store: Store? {
-        return self.model.store
-    }
-    
-    var mapPoint: MTMapPoint? {
-        let latitude = self.model.coordinate?.latitude ?? 0.0
-        let longitude = self.model.coordinate?.longitude ?? 0.0
-        
-        if latitude == 0.0 && longitude == 0.0 {
-            return nil
-        }
-        
-        let point = MTMapPoint(geoCoord: MTMapPointGeo(latitude: latitude, longitude: longitude))
-        
-        return point
-    }
     
     private var handle: AuthStateDidChangeListenerHandle? {
         return self.model.handle
@@ -46,312 +31,164 @@ class StoreInfoViewModel {
         return self.model.storageRef
     }
     
-    var userUID: String? {
-        return self.model.userUID
+    var mapPoint: MTMapPoint? {
+        let latitude = self.model.coordinate?.latitude ?? 0.0
+        let longitude = self.model.coordinate?.longitude ?? 0.0
+                
+        let point = MTMapPoint(geoCoord: MTMapPointGeo(latitude: latitude, longitude: longitude))
+        
+        return point
     }
     
-    
-    var storeStarScore: Int {
-        return self.model.storeStarScore
-    }
-    
-    var storeAverage: Double {
-        return self.model.storeAverage
-    }
-    
-    var storeReviewCount: Int {
-        return self.model.storeReviewCount
-    }
-    
-    
-    var jjimIsSelected: Bool {
-        return self.model.jjimIsSelected
-    }
-    
-
-    
-    
-
-    var storeUID: String? {
-        return self.model.store?.uid
-    }
-    
-    
-    
-    
-    
-    var finalStoreReviewList: [FinalStoreReview] {
-        return self.model.finalStoreReviewList
-    }
-    
-    
-    
-    
-    
-    var storeReviewList: [StoreReview] {
-        return self.model.storeReviewList
-    }
-    
-    var totalReviewImageList: [String: [UIImage?]] {
-        return self.model.totalReviewImageList
-    }
-    
-    var reviewImageList: [UIImage?] {
-        return self.model.reviewImageList
-    }
-    
-}
- 
-
-// MARK: model crud
-extension StoreInfoViewModel {
-    
-    // MARK: model create
     func createModel_store(store: Store) {
         self.model.store = store
     }
-    
-    // 지번주소와 도로명 주소를 받아서 좌표를 리턴하는 메소드
-    func createModel_coordinate(completionHandler: @escaping (Bool) -> ()) {
-        guard let address = store?.address,
-              let roadAddress = store?.roadAddress else {
-            completionHandler(false)
-            return
-        }
-
-        let geocode = CLGeocoder()
-
-        // 먼저 지번주소를 지오코딩
-        geocode.geocodeAddressString(address) { [weak self] placemarks, error in
-            guard let self = self else {return}
-
-            if let _ = error {
-                // 지번주소가 에러가 나면 도로명 주소로 지오코딩
-                geocode.geocodeAddressString(roadAddress) { placemarks, error in
-                    if let _ = error {
-                        completionHandler(false)
-                        return
-                    }
-
-                    let coordinate = placemarks?.first?.location?.coordinate
-
-                    self.model.coordinate = coordinate
-                    completionHandler(true)
-                }
-
-            } else {
-                let coordinate = placemarks?.first?.location?.coordinate
-
-                self.model.coordinate = coordinate
-                completionHandler(true)
-            }
-        }
         
-    }
-    
-    func createModel_handle() {
-        self.model.handle = Auth.auth().addStateDidChangeListener { [weak self] auth, user in
-            guard let self = self,
-                  let user = user else { return }
-            
-            let userUID = user.uid
-
-            self.createModel_userUID(userUID: userUID)
-        }
-    }
-    
-    func createModel_userUID(userUID: String?) {
-        self.model.userUID = userUID
-    }
-    
-    func createModel_reviewInfo(userImage: UIImage?,
-                           userName: String?,
-                           starScore: Int?,
-                           reviewImage: UIImage?,
-                           reviewText: String?) {
-        self.model.userImage = userImage
-        self.model.userName = userName
-        self.model.starScore = starScore
-        self.model.reviewImage = reviewImage
-        self.model.reviewText = reviewText
-    }
-    
-    
-    func createModel_storeReviewList(storeReviewList: [StoreReview]) {
-        self.model.storeReviewList = storeReviewList
-    }
-    
-    func createModel_totalReviewImageList(totalReviewImageList: [String: [UIImage?]]) {
-        self.model.totalReviewImageList = totalReviewImageList
-    }
-    
-    func createModel_reviewImageList(reviewImageList: [UIImage?]) {
-        self.model.reviewImageList = reviewImageList
-    }
-    
-    
-    // MARK: model update
-    func updateModel_jjimIsSelected(result: Bool) {
-        self.model.jjimIsSelected = result
-    }
-    
-    
-    // MARK: model delete
-    func deleteModel_handle() {
-        Auth.auth().removeStateDidChangeListener(self.model.handle!)
-    }
-    
 }
-
  
-// MARK: ref crud
+// MARK: Life Cycle
 extension StoreInfoViewModel {
     
-    // MARK: ref create
-    func createRef_userJjim() {
-        guard let userUID = self.userUID,
-              let storeUID = self.userUID else {return}
-        
-        self.ref.child("UserJjimList").child("\(userUID)JjimList").child(storeUID).setValue(true)
-        
-        // 이 부분은 트랜젝션 처리 해야함
-//        ref.child("Stores/\(identifier)/jjimCount").observe(.value, with: ({ [weak self] snapshot in
-//            guard let self = self,
-//                  let value = snapshot.value as? Int else {return}
-//            self.value = value
-//            print(self.value)
-//        }))
-//
-//        ref.child("Stores/\(identifier)").updateChildValues(["jjimCount": self.value + 1])
+    enum StoreInfoReadError: Error {
+        case notStoreUID
+        case decodeError
+        case storeListReadErrror
+        case reviewImageListReadError
     }
     
-    // MARK: read
-    func readRef_userJjim(completionHandler: @escaping (Bool) -> ()) {
-        guard let storeUID = self.userUID,
-              let userUID = self.userUID else {return}
+    func viewWillAppear(_ lodingView: LodingView,
+                        navigationVC: UINavigationController?,
+                        tableView: StoreInfoTableView,
+                        completionHandler: @escaping (UIAlertController?) -> ()) {
         
-        self.ref.child("UserJjimList").child("\(userUID)JjimList").queryOrderedByKey().queryEqual(toValue: storeUID).observe(.value) { snapshot in
+        navigationVC?.isNavigationBarHidden = true
+        lodingView.startLoding()
+        
+        let alert = Alert.confirmAlert(title: "가게 정보를 불러올 수 없습니다.") {
+            navigationVC?.popViewController(animated: true)
+        }
+        
+        guard let storeUID = model.store?.uid else {completionHandler(alert); return}
+        
+        firstly {
+            when(fulfilled: self.addStateDidChangeListener(),           // 로그인 유무
+                            self.readFIR_StoreList(storeUID))           // 가게 정보
             
-            guard let _ = snapshot.value as? [String: Any] else {
-                completionHandler(false)
-                return
+        }.then { userUID, _ in
+            self.readFIR_UserJjimList(userUID, storeUID)
+            
+        }.then { isJjim in
+            self.isJjimCheck(isJjim)
+            
+        }.done { _ in
+            DispatchQueue.main.async {
+                navigationVC?.isNavigationBarHidden = false
+                tableView.reloadData()
+                lodingView.stopLoding()
+                completionHandler(nil)
             }
             
-            completionHandler(true)
+        }.catch { error in
+            guard let error = error as? StoreInfoReadError else {return}
+            
+            switch error {
+            case .decodeError, .storeListReadErrror:
+                completionHandler(alert)
+                
+            default:
+                completionHandler(alert)
+            }
         }
     }
     
-    func readRef_storeReviewList(completionHandler: @escaping ([StoreReview]?) -> ()) {
-        guard let storeUID = self.userUID else {return}
-        
-        self.ref.child("StoreReviewList").child("\(storeUID)ReviewList").observe(.value, with: { snapshot in
-            guard let value = snapshot.value as? [String: Any] else {
-                completionHandler(nil)
-                return
-            }
-            
-            do {
-                let data = try JSONSerialization.data(withJSONObject: value)
-                let result = try JSONDecoder().decode([String: StoreReview].self, from: data)
+    // 1-1. 유저 uid 확인
+    private func addStateDidChangeListener() -> Promise<String?> {
+        return Promise { seal in
+            self.model.handle = Auth.auth().addStateDidChangeListener { _, user in
+                guard let user = user else {seal.fulfill(nil); return}
                 
-                let storeReviewList = Array(result.values)
-        
-                completionHandler(storeReviewList)
-            } catch {
-                print(error.localizedDescription)
+                let userUID = user.uid
+                
+                self.model.userUID = userUID
+                
+                seal.fulfill(userUID)
             }
-        })
+        }
+    }
+    
+    // 1-2. 가게 별점 등 가져오기
+    private func readFIR_StoreList(_ storeUID: String) -> Promise<Void> {
+        return Promise { seal in
+            self.ref.child("StoreList").child(storeUID).observeSingleEvent(of: .value, with: { snapshot in
+                guard let value = snapshot.value as? [String: Double] else {seal.reject(StoreInfoReadError.storeListReadErrror); return}
+                
+                let reviewAverage = value["reviewAverage"]!
+                let reviewCount = Int(value["reviewCount"]!)
+                let jjimCount = Int(value["jjimCount"]!)
+                
+                self.model.reviewCount = reviewCount
+                self.model.reviewAverage = reviewAverage
+                self.model.jjimcount = jjimCount
+                
+                seal.fulfill(Void())
+            })
+        }
+    }
+    
+
+
+    
+    // 2-1. 찜 확인
+    private func readFIR_UserJjimList(_ userUID: String?, _ storeUID: String) -> Promise<Bool?> {
+        return Promise { seal in
+            guard let userUID = userUID else {seal.fulfill(nil); return}
+            
+            self.ref.child("UserJjimList").child(userUID).child(storeUID).observeSingleEvent(of: .value, with: { snapshot in
+                guard let _ = snapshot.value as? Int else {seal.fulfill(false); return}
+                seal.fulfill(true)
+            })
+        }
     }
     
     
-    // MARK: delete
-    func deleteRef_userJjim() {
-        guard let userUID = self.userUID,
-              let storeUID = self.userUID else {return}
-        
-        self.ref.child("UserJjimList").child("\(userUID)JjimList").child("\(storeUID)").removeValue()
-        // 여기도 마찬가지로 트랜젝션 처리
-//        self.ref.child("Stores/\(identifier)").updateChildValues(["jjimCount": self.value - 1])
+    
+    // 3-1
+    private func isJjimCheck(_ isJjim: Bool?) -> Promise<Void> {
+        return Promise { seal in
+            guard let isJjim = isJjim else {
+                self.model.isJjim = false
+                seal.fulfill(Void())
+                return
+            }
+            
+            self.model.isJjim = isJjim
+            seal.fulfill(Void())
+        }
+    }
+    
+    
+    func removeStateDidChangeListener() {
+        Auth.auth().removeStateDidChangeListener(handle!)
     }
     
 }
 
-// MARK: storage
+// MARK: actions
 extension StoreInfoViewModel {
     
-    func readStorage_reviewImgaeList(storeReview: StoreReview, completionHandler: @escaping (FinalStoreReview?) -> ()) {
+    func didTapReviewWriteButton(_ sender: UIButton, completionHandler: @escaping (ReviewWriteViewController?, UIAlertController?) -> ()) {
+        if let _ = self.model.userUID {
+            guard let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ReviewWriteViewController") as? ReviewWriteViewController else {return}
         
-        let group = DispatchGroup()
-        var finalStoreReview: FinalStoreReview?
-        var imageList: [UIImage] = []
-        
-        
-        if storeReview.reviewImageCount != 0 {
-            // 전달 받은 리뷰에 사진이 있다면
-            let path = self.storageRef.child("reviewImageList/\(storeReview.identifier)")
-            
-            group.enter()
-            path.listAll { results, error in
-                if let error = error {
-                    print(error.localizedDescription)
-                    // 일단 스토리지가 만들어지지 않은 리뷰이기 때문에
-                    // 만들 수가 없는 리뷰임 아직은
-                    completionHandler(nil)
-                    return
-                } else {
-                    // 에러가 없으니까
-                    // 최소한 패스가 잘못되진 않았다!
-                    guard let results = results else {return}
-                    
-                    for item in results.items {
-                        group.enter()
-                        item.getData(maxSize: 1 * 1024 * 1024) { data, error in
-                            if let error = error {
-                                print(error.localizedDescription)
-                                return
-                            } else {
-                                guard let data = data else {return}
-                                let image = UIImage(data: data)
-                                
-                                imageList.append(image!)
-                                group.leave()
-                            }
-                        }
-                    } // for
-                    group.leave()
-                }
-            } // listAll
-            
-            group.notify(queue: .main) {
-                let userName = storeReview.userName
-                let starScore = storeReview.starScore
-                let reviewImageList = imageList
-                let reviewText = storeReview.reviewText
-                
-                
-                finalStoreReview = FinalStoreReview(userName: userName, starScore: starScore, reviewImageList: reviewImageList, reviewText: reviewText)
-                
-                completionHandler(finalStoreReview)
-            }
-        
-            
+            vc.vm.createModel(storeName: self.model.store?.name,
+                              storeUID: self.model.store?.uid)
+
+            completionHandler(vc, nil)
         } else {
-            // 전달 받은 리뷰에 사진이 없다면
-            let userName = storeReview.userName
-            let starScore = storeReview.starScore
-            let reviewText = storeReview.reviewText
-            
-            
-            finalStoreReview = FinalStoreReview(userName: userName, starScore: starScore, reviewImageList: [], reviewText: reviewText)
-            
-            // 그냥 사진 없으면
-            // 사진 없는 최종 데이터 만들어서 리턴해
-            completionHandler(finalStoreReview)
+            let alert = Alert.confirmAlert(title: "로그인 후 사용할 수 있습니다.")
+            completionHandler(nil, alert)
         }
-        
-        
     }
-    
     
 }
 
@@ -369,50 +206,73 @@ extension StoreInfoViewModel {
         case 1:
             return 1
         case 2:
-            return self.finalStoreReviewList.count
+            return 1
         default:
             return 0
         }
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath, delegate: StoreInfoViewController) -> UITableViewCell {
+    
         switch indexPath.section {
         case 0:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "MapCell", for: indexPath) as? MapCell else {return UITableViewCell()}
             
-            if let mapPoint = mapPoint {
-                cell.mapView.setMapCenter(mapPoint, animated: true)
+            if cell.delegate == nil {
+                cell.delegate = delegate
+                cell.setupUI_mapView()
             }
-                        
+            
             return cell
             
         case 1:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "StoreInfoCell", for: indexPath) as? StoreInfoCell else {return UITableViewCell()}
             
-            // storeNameLabel
+            let store = model.store
+            
+            // 가게 이름 할당
             cell.storeNameLabel.text = store?.name
             
-            // superStoreEvaluationStackView
-            cell.superStoreEvaluationStackView.storeEvaluationStackView0
-            cell.superStoreEvaluationStackView.storeEvaluationStackView1.storeScoreAverageLabel.text = String(storeAverage)
-            cell.superStoreEvaluationStackView.storeEvaluationStackView1.storeReviewCountLabel.text = String(storeReviewCount)
+            // 가게 별점 할당
+            cell.cosmosView.rating = model.reviewAverage
+            cell.cosmosView.text = "\(model.reviewAverage)"
+            cell.reviewCountLabel.text = "(\(model.reviewCount))"
+
+            if cell.delegate == nil {
+                cell.delegate = delegate
+            }
             
-            // buttonStackView
+            // 찜 버튼
+            cell.jjimButton.isSelected = model.isJjim
+//            cell.jjimButton.setTitle("\(model.jjimcount)", for: .normal)
             
-            // superStoreInfoStackView
+            // 가게 정보 할당
             cell.superStoreInfoStackView.storeInfoStackView0.storeMainMenuLabel.text = store?.name
-            cell.superStoreInfoStackView.storeInfoStackView1.storeSelectDayLabel.text = store?.assignationSelectedDay
+            
+            if var selectDay = store?.assignationSelectedDay {
+                let index1 = selectDay.index(selectDay.startIndex, offsetBy: 4)
+                let index2 = selectDay.index(selectDay.startIndex, offsetBy: 7)
+
+                selectDay.insert("-", at: index1)
+                selectDay.insert("-", at: index2)
+                
+                cell.superStoreInfoStackView.storeInfoStackView1.storeSelectDayLabel.text = selectDay
+            } else {
+                cell.superStoreInfoStackView.storeInfoStackView1.storeSelectDayLabel.text = "없음"
+            }
+            
+            
             cell.superStoreInfoStackView.storeInfoStackView2.storeAddressLabel.text = store?.address
             cell.superStoreInfoStackView.storeInfoStackView3.storeRoadAddressLabel.text = store?.roadAddress
             
             return cell
             
         case 2:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "StoreReviewCell", for: indexPath) as? StoreReviewCell else {return UITableViewCell()}
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "StoreContentCell", for: indexPath) as? StoreContentCell else {return UITableViewCell()}
             
-            
-            configure_StoreReviewCell(cell: cell, indexPath: indexPath)
+            if cell.delegate == nil {
+                cell.delegate = delegate
+            }
             
             return cell
             
@@ -423,7 +283,6 @@ extension StoreInfoViewModel {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        
         if indexPath.section == 0 {
             return 400.0
         }
@@ -433,111 +292,275 @@ extension StoreInfoViewModel {
     
 }
 
-// MARK: configure
-extension StoreInfoViewModel {
 
-    func updateModel_finalStoreReviewList(finalStoreReviewList: [FinalStoreReview]) {
-        self.model.finalStoreReviewList = finalStoreReviewList
-    }
+// MARK: MapCellDelegate, StoreInfoCellDelegate, StoreReviewCellDelegate
+extension StoreInfoViewModel {
     
-    func createModel_FinalStoreReviewList(completionHandler: @escaping (Bool) -> ()) {
-        // 해당 가게에 리뷰가 있는지 확인
-        let group = DispatchGroup()
-        var finalStoreReviewList: [FinalStoreReview] = []
-        // 리뷰가 있는지 없는지만
-        self.readRef_storeReviewList { [weak self] result in
-            
-            guard let self = self,
-                  let storeReviewList = result else {
-                // 리뷰 없음
-                // 빈 최종리뷰배열을 업데이트
-                self?.updateModel_finalStoreReviewList(finalStoreReviewList: finalStoreReviewList)
-                completionHandler(false)
-                return
-            }
-            
-            // 리뷰 있음
-            // 사진이 있는 리뷰도 잇을것이고
-            // 사진이 없는 리뷰도 있을 것이란 말야
-            for storeReview in storeReviewList {
-                // 일단 리뷰는 있는데
-                // 리뷰에
-                // 사진이 있는지 없는지 검사좀
-                group.enter()
-                self.readStorage_reviewImgaeList(storeReview: storeReview) { finalStoreReview in
-                    guard let finalStoreReview = finalStoreReview else {
-                        // 여기에 걸리는건 사진은 있지만 스토리지에 올라오지 않은 리뷰
-                        
-                        group.leave()
+    func setupUI_mapView(_ mapView: MTMapView, completionHandler: @escaping (UIAlertController?) -> ()) {
+        let alert = Alert.confirmAlert(title: "해당 주소로 지도에 표시할 수 없습니다.")
+        
+        guard let address = model.store?.address,
+              let roadAddress = model.store?.roadAddress else {
+            mapView.setMapCenter(self.mapPoint, animated: true)
+            completionHandler(alert)
+            return
+        }
+
+        let geocode = CLGeocoder()
+
+        // 먼저 지번주소를 지오코딩
+        geocode.geocodeAddressString(address) { [weak self] placemarks, error in
+            guard let self = self else {return}
+
+            if let _ = error {
+                // 지번주소가 에러가 나면 도로명 주소로 지오코딩
+                geocode.geocodeAddressString(roadAddress) { placemarks, error in
+                    if let _ = error {
+                        mapView.setMapCenter(self.mapPoint, animated: true)
+                        completionHandler(alert)
                         return
                     }
-    
+
+                    let coordinate = placemarks?.first?.location?.coordinate
+
+                    self.model.coordinate = coordinate
+                    mapView.setMapCenter(self.mapPoint, animated: true)
                     
-                    // 사진 없는 리뷰와 사진 있는 리뷰 모두 추가
-                    finalStoreReviewList.append(finalStoreReview)
-                    group.leave()
+                    let poi = MTMapPOIItem()
+                    poi.mapPoint = self.mapPoint
+                    poi.markerType = .bluePin
+                    mapView.addPOIItems([poi])
+                    
+                    completionHandler(nil)
+                }
+            } else {
+                let coordinate = placemarks?.first?.location?.coordinate
+
+                self.model.coordinate = coordinate
+                mapView.setMapCenter(self.mapPoint, animated: true)
+                
+                let poi = MTMapPOIItem()
+                poi.mapPoint = self.mapPoint
+                poi.markerType = .bluePin
+                mapView.addPOIItems([poi])
+                
+                completionHandler(nil)
+            }
+        }
+    }
+        
+    func setupUI_callButton(_ sender: UIButton, completionHandler: (UIAlertController) -> ()) {
+        var alert = Alert.confirmAlert(title: "번호 없음")
+        
+        guard let phoneNumber = model.store?.phoneNumber else {
+            completionHandler(alert)
+            return
+        }
+        
+        if phoneNumber.isEmpty {
+            completionHandler(alert)
+            return
+        }
+        
+        var number = phoneNumber.components(separatedBy: [" "]).joined()
+        
+        let regex1 = "^02([0-9]{3})([0-9]{4})$"
+        let regex2 = "^02([0-9]{4})([0-9]{4})$"
+        let regex3 = "^01([0-9])([0-9]{3,4})([0-9]{4})$"
+            
+        var index1: String.Index
+        var index2: String.Index
+        
+        if NSPredicate(format: "SELF MATCHES %@", regex1).evaluate(with: number) {
+            index1 = number.index(number.startIndex, offsetBy: 2)
+            index2 = number.index(number.startIndex, offsetBy: 6)
+            number.insert("-", at: index1)
+            number.insert("-", at: index2)
+            
+        } else if NSPredicate(format: "SELF MATCHES %@", regex2).evaluate(with: number) {
+            index1 = number.index(number.startIndex, offsetBy: 2)
+            index2 = number.index(number.startIndex, offsetBy: 7)
+            number.insert("-", at: index1)
+            number.insert("-", at: index2)
+            
+        } else if NSPredicate(format: "SELF MATCHES %@", regex3).evaluate(with: number) {
+            index1 = number.index(number.startIndex, offsetBy: 3)
+            index2 = number.index(number.startIndex, offsetBy: 8)
+            number.insert("-", at: index1)
+            number.insert("-", at: index2)
+        }
+                
+        alert = Alert.confirmAlert(title: number)
+        completionHandler(alert)
+    }
+    
+    func setupUI_jjimButton(_ sender: UIButton, completionHandler: (UIAlertController) -> ()) {
+        if let userUID = model.userUID, let storeUID = model.store?.uid {
+            if sender.isSelected {
+                firstly {
+                    when(fulfilled: self.deleteFIR_UserJjimList(userUID, storeUID),
+                                    self.deleteFIR_UserList(userUID),
+                                    self.deleteFIR_StoreList(storeUID))
+                }.done { _, _, _ in
+                    sender.isSelected = !sender.isSelected
+                }.catch { error in
+                    
+                }
+            } else {
+                firstly {
+                    when(fulfilled: self.createFIR_UserJjimList(userUID, storeUID),
+                                    self.updateFIR_UserList(userUID),
+                                    self.updateFIR_StoreList(storeUID))
+                }.done { _, _, _ in
+                    sender.isSelected = !sender.isSelected
+                }.catch { error in
+                    
                 }
             }
-            
-            group.notify(queue: .main) {
-                self.updateModel_finalStoreReviewList(finalStoreReviewList: finalStoreReviewList)
-                completionHandler(true)
+        } else {
+            let alert = Alert.confirmAlert(title: "로그인 후 사용할 수 있습니다.")
+            completionHandler(alert)
+        }
+    }
+    
+    enum StoreInfoJjimError: Error {
+        
+    }
+    
+    // 찜 했을때
+    private func createFIR_UserJjimList(_ userUID: String, _ storeUID: String) -> Promise<Void> {
+        return Promise { seal in
+            self.ref.child("UserJjimList").child(userUID).child(storeUID).setValue(Int(Date().timeIntervalSince1970)) { error, _  in
+                if let _ = error {
+                    
+                } else {
+                    seal.fulfill(Void())
+                }
             }
         }
-        
     }
     
-    
-    
-    func configure_StoreReviewCell(cell: StoreReviewCell, indexPath: IndexPath) {
-        
-        guard !self.finalStoreReviewList.isEmpty else {return}
-        
-        let finalStoreReview = self.finalStoreReviewList[indexPath.row]
-        
-        print(finalStoreReview)
-        
-        // userName
-        cell.userNameLabel.text = finalStoreReview.userName
-        
-        // starScore
-        for index in 0...finalStoreReview.starScore {
-            guard let imageView = cell.starScoreStackView.arrangedSubviews[index] as? UIImageView else {return}
-            imageView.image = UIImage(systemName: "star.fill")
-            imageView.tintColor = .yellow
+    private func updateFIR_UserList(_ userUID: String) -> Promise<Void> {
+        return Promise { seal in
+            let updates = ["jjimCount": ServerValue.increment(1)]
+            
+            self.ref.child("UserList").child(userUID).updateChildValues(updates) { error, _  in
+                if let _ = error {
+                    
+                } else {
+                    seal.fulfill(Void())
+                }
+            }
         }
-        
-        // reviewImage
-        if !finalStoreReview.reviewImageList.isEmpty {
-            // 해당 리뷰에 사진 있음
-            let reviewImageList = finalStoreReview.reviewImageList
-            cell.vm.createModel_reviewImageList(reviewImageList: reviewImageList)
-            cell.userReviewImageCollectionView.reloadData()
-        } else {
-            // 해당 리뷰에 사진없음
-        }
-        
-        
-        // reviewText
-        cell.userReviewLabel.text = finalStoreReview.reviewText
-        
-        
     }
     
-    func configure_ReviewImageCell(cell: ReviewImageCell, indexPath: IndexPath) {
+    private func updateFIR_StoreList(_ storeUID: String) -> Promise<Void> {
+        return Promise { seal in
+            self.ref.child("StoreList").child(storeUID).runTransactionBlock({ currentData in
+                if var post = currentData.value as? [String: AnyObject] {
+                    var jjimCount = post["jjimCount"] as! Int
+                    jjimCount += 1
+                    
+                    post["jjimCount"] = jjimCount as AnyObject
+                    
+                    currentData.value = post
+                    
+                    return TransactionResult.success(withValue: currentData)
+                }
+                
+                return TransactionResult.success(withValue: currentData)
+            }) { error, _, snapshot in
+                if let _ = error {
+                    
+                } else {
+                    seal.fulfill(Void())
+                }
+            }
+        }
+    }
+    
+    // 찜 취소 했을 때
+    private func deleteFIR_UserJjimList(_ userUID: String, _ storeUID: String) -> Promise<Void> {
+        return Promise { seal in
+            self.ref.child("UserJjimList").child(userUID).child(storeUID).removeValue { error, _ in
+                if let _ = error {
+                    
+                } else {
+                    seal.fulfill(Void())
+                }
+            }
+        }
+    }
+    
+    private func deleteFIR_UserList(_ userUID: String) -> Promise<Void> {
+        return Promise { seal in
+            let updates = ["jjimCount": ServerValue.increment(-1)]
+            
+            self.ref.child("UserList").child(userUID).updateChildValues(updates) { error, _  in
+                if let _ = error {
+                    
+                } else {
+                    seal.fulfill(Void())
+                }
+            }
+        }
+    }
+    
+    private func deleteFIR_StoreList(_ storeUID: String) -> Promise<Void> {
+        return Promise { seal in
+            self.ref.child("StoreList").child(storeUID).runTransactionBlock({ currentData in
+                if var post = currentData.value as? [String: AnyObject] {
+                    var jjimCount = post["jjimCount"] as! Int
+                    jjimCount -= 1
+                    
+                    post["jjimCount"] = jjimCount as AnyObject
+                    
+                    currentData.value = post
+                    
+                    return TransactionResult.success(withValue: currentData)
+                }
+                
+                return TransactionResult.success(withValue: currentData)
+            }) { error, _, snapshot in
+                if let _ = error {
+                    
+                } else {
+                    seal.fulfill(Void())
+                }
+            }
+        }
+    }
+
+    func setupUI_shareButton(_ sender: UIButton,
+                             view: UIView,
+                             completionHandler: (UIActivityViewController) -> ()) {
+        let activityViewController = UIActivityViewController(activityItems : ["공유하기"], applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = view
         
-        let reviewImage = self.reviewImageList[indexPath.item]
+        completionHandler(activityViewController)
+    }
+    
+    func didTapShowStoreReviewButton(_ sender: UIButton, completionHandler: (StoreReviewViewController) -> ()) {
+        guard let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "StoreReviewViewController") as? StoreReviewViewController,
+              let store = model.store else {return}
         
-        print("--------")
-        print(reviewImage)
-        
-        cell.reviewImageView.image = reviewImage
+        vc.vm.createModel_store(store)
+        completionHandler(vc)
     }
     
 }
 
-
-
-
-
-
+extension StoreInfoViewModel {
+    
+    func touchesShouldCancel(in view: UIView, superTouchesShouldCancel: Bool) -> Bool {
+        
+        if view.tag == 20090806 {
+            return false
+        } else if view is UIButton {
+            return true
+        }
+        
+        return superTouchesShouldCancel
+    }
+    
+}

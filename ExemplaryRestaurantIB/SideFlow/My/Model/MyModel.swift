@@ -11,9 +11,11 @@ import FirebaseAuth
 
 struct MyModel {
     
-    let ref = Database.database().reference().child("UserList")
+    let ref = Database.database().reference()
     var handle: AuthStateDidChangeListenerHandle?
     
     var userUID: String?
+    var userName: String?
     
 }
+

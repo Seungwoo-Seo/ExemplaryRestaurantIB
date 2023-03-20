@@ -19,6 +19,10 @@ class MapCell: UITableViewCell {
     }()
     
     
+    // MARK: delegate
+    weak var delegate: MapCellDelegate?
+    
+    
     // MARK: init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -29,6 +33,15 @@ class MapCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    func setupUI_mapView() {
+        self.delegate?.setupUI_mapView(self.mapView)
+    }
+    
+}
+
+// MARK: MTMapViewDelegate
+extension MapCell: MTMapViewDelegate {
     
 }
 
@@ -43,14 +56,3 @@ private extension MapCell {
     }
     
 }
-
-// MARK: MTMapViewDelegate
-extension MapCell: MTMapViewDelegate {
-    
-}
-
-    
-    
-
-
-

@@ -16,229 +16,172 @@ class BusinessTypeSelectViewController: UIViewController {
     // collectionView
     @IBOutlet weak var collectionView: UICollectionView!
     
-    // hazyView
-    lazy var hazyView: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+    // bottom sheet
+    lazy var hazyView: HazyView = {
+        let view = HazyView(frame: .zero)
+        view.backgroundColor = .gray
+        view.alpha = 0.0
+        view.delegate = self
         
         return view
     }()
     
-    // button sheet
     lazy var gooSelectView: GooSelectView = {
         let view = GooSelectView(frame: .zero)
         view.backgroundColor = .white
         view.layer.cornerRadius = 20.0
         view.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMinYCorner, .layerMaxXMinYCorner)
         view.clipsToBounds = true
+        view.delegate = self
         
         return view
     }()
     
     
-    
     // MARK: ViewModel
     let vm = BusinessTypeSelectViewModel()
     
-    // MARK: Life Cycles
+    
+    // MARK: Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupUI()
         setupLayout()
-        setupGesture()
-        setupObserver()
+        setupNotification()
     }
     
-    // MARK: @IBActions
-    // gooSelectButton
+    // MARK: actions
+    @IBAction func didTapMyButton(_ sender: UIBarButtonItem) {
+        vm.didTapMyButton(sender) { [weak self] vc in
+            self?.navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+    
     @IBAction func didTapGooSelectButton(_ sender: UIButton) {
-        showBottomSheet()
+        vm.didTapGooSelectButton(sender,
+                                 navigationItem: navigationItem,
+                                 view: view,
+                                 hazyView: hazyView,
+                                 gooSelectView: gooSelectView)
     }
     
-    // businessTypeSortButton
-    @IBAction func didTapBusinessTypeSortButton(_ sender: UIButton) {
-        
-    }
-}
-
-private extension BusinessTypeSelectViewController {
-    
-    private func setupUI() {
-        // navigationBar
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = UIColor.systemBlue
-        self.navigationController?.navigationBar.standardAppearance = appearance
-        self.navigationController?.navigationBar.scrollEdgeAppearance = appearance
-        
-        self.navigationController?.navigationBar.tintColor = .white
-  
-        
-        // headerView.searchBar
-        headerView.searchBar.searchBarStyle = .minimal
-        if let textfield = headerView.searchBar.value(forKey: "searchField") as? UITextField {
-            textfield.placeholder = "모범음식점을 검색하세요."
-            textfield.backgroundColor = UIColor.white
-        }
-        
-        
-        // collectionView
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        
-        // hazyView
-        hazyView.alpha = 0.0
-        
-        // gooSelectView.tableView
-        gooSelectView.tableView.dataSource = self
-        gooSelectView.tableView.delegate = self
-        
-        // gooSelectView.cancleButton
-        gooSelectView.cancleButton.addTarget(self, action: #selector(didTapCancleButton(_:)), for: .touchUpInside)
-        
-    }
-    
-    private func setupLayout() {
-        [
-            hazyView,
-            gooSelectView
-        ].forEach { view.addSubview($0) }
-        
-        // hazyView
-        hazyView.snp.makeConstraints { make in
-            make.top.leading.trailing.bottom.equalTo(view)
-        }
-        
-        // bottomSheet
-        gooSelectView.snp.makeConstraints { make in
-            make.top.equalTo(view.snp.top).inset(view.bounds.height)
-            make.leading.trailing.equalToSuperview()
-            make.bottom.equalTo(view.snp.bottom)
-        }
-    }
-    
-    private func setupGesture() {
-       setupGesture_hazyView()
-    }
-    
-    // 이 부분 -> vm에 있는게 맞는건가
-    private func setupObserver() {
-        vm.addObserver(self.collectionView)
+    @objc func didTapNavigationBar(_ sender: UINavigationBar) {
+        vm.didTapNavigationBar(sender,
+                              navigationItem: navigationItem,
+                              view: view,
+                              hazyView: hazyView,
+                              gooSelectView: gooSelectView)
     }
     
 }
 
-// MARK: headerView.searchBar
+// MARK: searchBar
 extension BusinessTypeSelectViewController: UISearchBarDelegate {
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        guard let vc = storyboard?.instantiateViewController(withIdentifier: "SearchViewController") as? SearchViewController else {return}
-        
-        navigationController?.pushViewController(vc, animated: true)
+
+        vm.searchBarTextDidBeginEditing(searchBar) { [weak self] vc in
+            self?.navigationController?.pushViewController(vc, animated: true)
+        }
     }
     
 }
 
-// MARK: self.collectionView
+// MARK: gooSelectView
+extension BusinessTypeSelectViewController: BottomSheetDelegate {
+    
+    func didTapHazyView(_ tapGesture: UITapGestureRecognizer) {
+        vm.didTapHazyView(tapGesture,
+                          vc: self)
+    }
+    
+    func didTapCancelButton(_ button: UIButton) {
+        vm.didTapCancelButton(button,
+                              vc: self)
+    }
+    
+    func didTapTableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        vm.didTapTableView(tableView,
+                           didSelectRowAt: indexPath,
+                           vc: self)
+    }
+    
+}
+
+// MARK: collectionView
 extension BusinessTypeSelectViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return vm.configure_collectionView(collectionView,
-                                           numberOfItemsInSection: section)
+        return vm.collectionView(collectionView, numberOfItemsInSection: section)
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        return vm.configure_collectionView(collectionView,
-                                           cellForItemAt: indexPath)
+        return vm.collectionView(collectionView, cellForItemAt: indexPath)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        vm.configure_collectionView(collectionView,
-                                    didSelectItemAt: indexPath) { [weak self] vc in
+        vm.collectionView(collectionView, didSelectItemAt: indexPath) { [weak self] vc in
             self?.navigationController?.pushViewController(vc, animated: true)
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        return vm.configure_collectionView(collectionView,
-                                           layout: collectionViewLayout,
-                                           sizeForItemAt: indexPath)
+        return vm.collectionView(collectionView, layout: collectionViewLayout, sizeForItemAt: indexPath)
+        
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
+        
+        vm.collectionView(collectionView, didHighlightItemAt: indexPath)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath) {
+        
+        vm.collectionView(collectionView, didUnhighlightItemAt: indexPath)
     }
     
 }
 
-// MARK: hazyView, bottomSheet ----> 이 extension 이 view 영역에 있는게 맞는건가..확신이 안듬
-extension BusinessTypeSelectViewController {
+private extension BusinessTypeSelectViewController {
     
-    func setupGesture_hazyView() {
-        let tap = UITapGestureRecognizer(target: self, action: #selector(didTapHazyView(_:)))
-        hazyView.addGestureRecognizer(tap)
-        hazyView.isUserInteractionEnabled = true
+    func setupUI() {
+        self.navigationItem.backButtonTitle = "홈"
+        self.navigationController?.navigationBar.tintColor = UIColor.black
+        let navigationBarTap = UITapGestureRecognizer(target: self, action: #selector(didTapNavigationBar(_:)))
+        navigationController?.navigationBar.addGestureRecognizer(navigationBarTap)
+        
+        // headerView.searchBar
+        headerView.searchBar.searchBarStyle = .minimal
+        headerView.searchBar.searchTextField.backgroundColor = .white
+        
+        // collectionView
+        collectionView.dataSource = self
+        collectionView.delegate = self
     }
     
-    func showBottomSheet() {
-        gooSelectView.snp.updateConstraints { make in
-            make.top.equalTo(view.bounds.height * 2/5)
+    func setupLayout() {
+        [
+            hazyView,
+            gooSelectView
+        ].forEach { view.addSubview($0) }
+        
+        hazyView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
         
-        UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: { [weak self] in
-            self?.hazyView.alpha = 0.5
-            self?.view.layoutIfNeeded()
-        }, completion: nil)
+        gooSelectView.snp.makeConstraints { make in
+            make.height.equalTo(0)
+            make.leading.trailing.bottom.equalToSuperview()
+        }
     }
     
-    func hideBottomSheet() {
-        gooSelectView.snp.updateConstraints { make in
-            make.top.equalToSuperview().inset(view.bounds.height)
-        }
+    func setupNotification() {
+        vm.setupNotification(collectionView)
+    }
         
-        UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: { [weak self] in
-            self?.hazyView.alpha = 0.0
-            self?.view.layoutIfNeeded()
-        }) { [weak self] _ in
-            if self?.presentingViewController != nil {
-                self?.dismiss(animated: false, completion: nil)
-            }
-        }
-    }
-    
-    @objc func didTapHazyView(_ tapGesture: UITapGestureRecognizer) {
-        hideBottomSheet()
-    }
-    
-    @objc func didTapCancleButton(_ button: UIButton) {
-        hideBottomSheet()
-    }
-    
 }
-
-// MARK: gooSelectView.tableView
-extension BusinessTypeSelectViewController: UITableViewDataSource, UITableViewDelegate {
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return vm.configure_tableView(tableView, numberOfRowsInSection: section)
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return vm.configure_tableView(tableView,
-                                      cellForRowAt: indexPath,
-                                      headerView: headerView)
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        vm.configure_tableView(tableView,
-                               didSelectRowAt: indexPath,
-                               hideView: hideBottomSheet) { [weak self] gooName in
-            self?.headerView.gooSelectButton.setTitle(gooName, for: .normal)
-            self?.collectionView.reloadData()
-        }
-    }
-    
-}
-
-

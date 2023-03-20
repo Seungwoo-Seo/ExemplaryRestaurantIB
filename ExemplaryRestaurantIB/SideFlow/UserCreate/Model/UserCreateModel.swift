@@ -10,14 +10,14 @@ import FirebaseDatabase
 
 struct UserCreateModel {
     
+    let ref = Database.database().reference()
+    
     var email: String?
     var password: String?
     var passwordAgain: String?
     var name: String?
-    var birthDay: String?
-    var gender: String?
-    var cellphone: String?
     
-    let ref = Database.database().reference().child("UserList")
+    var emailState = false
+    var passwordState = false
     
 }

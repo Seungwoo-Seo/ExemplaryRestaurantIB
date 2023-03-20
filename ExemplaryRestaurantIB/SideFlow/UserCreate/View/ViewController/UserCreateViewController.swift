@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import SnapKit
+import Lottie
 
 // 회원가입 화면
 class UserCreateViewController: UIViewController {
@@ -24,44 +26,27 @@ class UserCreateViewController: UIViewController {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var nameTextField: UITextField!
     
-    @IBOutlet weak var birthDayLabel: UILabel!
-    @IBOutlet weak var birthDayTextField: UITextField!
-    
-    @IBOutlet weak var genderLabel: UILabel!
-    @IBOutlet weak var genderMaleButton: RadioButton!
-    @IBOutlet weak var genderFemaleButton: RadioButton!
-    
-    @IBOutlet weak var cellphoneLabel: UILabel!
-    @IBOutlet weak var cellphoneTextField: UITextField!
-
     @IBOutlet weak var userCreateButton: UIButton!
     
     // MARK: View
-    lazy var datePicker: UIDatePicker = {
-        let datePicker = UIDatePicker()
-        return datePicker
-    }()
-
-    lazy var toolBar: UIToolbar = {
-        let toolBar = UIToolbar()
-        return toolBar
-    }()
-    
-    lazy var doneButton: UIBarButtonItem = {
-        let barButton = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(didTapDoneButton))
-        return barButton
+    lazy var emailCheckAnimationView: AnimationView = {
+        let animationView = AnimationView(name: "checkmark")
+        animationView.animationSpeed = 1.0
+        animationView.loopMode = .playOnce
+        animationView.contentMode = .scaleAspectFit
+        
+        return animationView
     }()
     
-    lazy var cancleButton: UIBarButtonItem = {
-        let barButton = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(didTapCancleButton))
-        return barButton
+    lazy var passwordCheckAnimationView: AnimationView = {
+        let animationView = AnimationView(name: "checkmark")
+        animationView.animationSpeed = 1.0
+        animationView.loopMode = .playOnce
+        animationView.contentMode = .scaleAspectFit
+        
+        return animationView
     }()
-    
-    lazy var flexibleSpace: UIBarButtonItem = {
-        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        return flexibleSpace
-    }()
-
+        
     
     // MARK: ViewModel
     let vm = UserCreateViewModel()
@@ -73,151 +58,89 @@ class UserCreateViewController: UIViewController {
         
         setupUI()
         setupLayout()
-        setupGesture()
+    }
+    
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
+        self.view.endEditing(true)
     }
     
     
     // MARK: @IBActions
     @IBAction func didTapBackButton(_ sender: UIButton) {
-        self.dismiss(animated: true)
-    }
-    
-    @IBAction func didTapEmailOverlapCheckButton(_ sender: UIButton) {
-        if self.emailTextField.text?.isEmpty != true {
-            guard let email = self.emailTextField.text else {return}
-            
-            self.vm.readRef_emailOverlapCheck(email: email) { [weak self] result in
-                let alert = UIAlertController(title: "사용가능", message: nil, preferredStyle: .alert)
-                let confirm = UIAlertAction(title: "확인", style: .cancel)
-                alert.addAction(confirm)
-                
-                if result {
-                    self?.present(alert, animated: true)
-                } else {
-                    alert.title = "이미 있는 사용자"
-                    self?.present(alert, animated: true)
-                }
-            }
-        } else {
-            let alert = UIAlertController(title: "아이디(이메일)", message: nil, preferredStyle: .alert)
-            let confirm = UIAlertAction(title: "확인", style: .cancel)
-            alert.addAction(confirm)
-            self.present(alert, animated: true)
-        }
         
-    }
-    
-    @IBAction func didTapUserCreateButton(_ sender: UIButton) {
-        guard let email = self.emailTextField.text,
-              let password = self.passwordAgainTextField.text,
-              let passwordAgain = self.passwordAgainTextField.text,
-              let name = self.nameTextField.text,
-              let birthDay = self.birthDayTextField.text,
-              let gender = self.genderMaleButton.isSelected ? self.genderMaleButton.titleLabel?.text : self.genderFemaleButton.titleLabel?.text,
-              let cellphone = self.cellphoneTextField.text else {return}
-        
-        self.vm.createModel(email: email,
-                            password: password,
-                            passwordAgain: passwordAgain,
-                            name: name,
-                            birthDay: birthDay,
-                            gender: gender,
-                            cellphone: cellphone)
-    
-        self.vm.auth_createUser() {
+        vm.didTapBackButton(sender) {
             self.dismiss(animated: true)
         }
     }
     
+    @IBAction func didTapEmailOverlapCheckButton(_ sender: UIButton) {
+        
+        vm.didTapEmailOverlapCheckButton(sender, animationView: emailCheckAnimationView) { alert in
+            self.present(alert, animated: true)
+        }
+    }
+        
+    @IBAction func didTapUserCreateButton(_ sender: UIButton) {
+        
+        vm.didTapUserCreateButton(sender, nameTextField: nameTextField, vc: self) { alert in
+            self.present(alert, animated: true)
+        }
+    }
+    
 }
 
-extension UserCreateViewController: Setup {
+extension UserCreateViewController: UITextFieldDelegate {
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        vm.textField(textField, shouldChangeCharactersIn: range, replacementString: string, overlapButton: emailOverlapCheckButton, animationView: passwordCheckAnimationView)
+    }
+    
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        
+        vm.textFieldDidEndEditing(textField) { alert in
+            self.present(alert, animated: true)
+        }
+    }
+    
+    
+}
+
+private extension UserCreateViewController {
     
     func setupUI() {
-        setupUI_emailOverlapCheckButton()
+        emailTextField.tag = 0
+        passwordTextField.tag = 1
+        passwordAgainTextField.tag = 2
+        nameTextField.tag = 3
         
-        setupUI_datePicker()
-        setupUI_toolBar()
-        setupUI_doneButton()
-        setupUI_cancleButton()
-        
-        setupUI_birthDayTextField()
-        setupUI_genderButton()
+        emailTextField.delegate = self
+        passwordTextField.delegate = self
+        passwordAgainTextField.delegate = self
+        nameTextField.delegate = self
+                
+        emailOverlapCheckButton.isEnabled = false
     }
     
     func setupLayout() {
+        [emailCheckAnimationView, passwordCheckAnimationView].forEach { view.addSubview($0) }
+        
+        emailCheckAnimationView.snp.makeConstraints { make in
+            make.top.equalTo(emailLabel.snp.top)
+            make.leading.equalTo(emailLabel.snp.trailing).offset(10)
+            make.height.equalTo(emailLabel)
+            make.width.equalTo(emailCheckAnimationView.snp.height)
+        }
+        
+        passwordCheckAnimationView.snp.makeConstraints { make in
+            make.top.equalTo(passwordAgainLabel.snp.top)
+            make.leading.equalTo(passwordAgainLabel.snp.trailing).offset(10)
+            make.height.equalTo(passwordAgainLabel)
+            make.width.equalTo(passwordAgainLabel.snp.height)
+        }
         
     }
     
-    func setupGesture() {
-        
-    }
-
-}
-
-// MARK: for setupUI
-private extension UserCreateViewController {
-    
-    func setupUI_emailOverlapCheckButton() {
-        self.emailOverlapCheckButton.layer.borderWidth = 1.0
-        self.emailOverlapCheckButton.layer.borderColor = UIColor.black.cgColor
-    }
-    
-    func setupUI_datePicker() {
-        self.datePicker.preferredDatePickerStyle = .wheels
-        self.datePicker.datePickerMode = .date
-        self.datePicker.locale = Locale(identifier: "ko_KR")
-        self.datePicker.timeZone = .current
-        self.datePicker.addTarget(self, action: #selector(handleDatePicker(_:)), for: .valueChanged)
-    }
-    
-    @objc func handleDatePicker(_ sender: UIDatePicker) {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy년 MM월 dd일"
-        formatter.locale = Locale(identifier: "ko_KR")
-        self.birthDayTextField.text = formatter.string(from: sender.date)
-    }
-    
-    func setupUI_toolBar() {
-        self.toolBar.barStyle = .default
-        self.toolBar.isTranslucent = true
-        self.toolBar.tintColor = UIColor.systemBackground
-        self.toolBar.sizeToFit()
-        
-        self.toolBar.setItems([cancleButton, flexibleSpace, doneButton], animated: false)
-        self.toolBar.isUserInteractionEnabled = true
-    }
-    
-    func setupUI_doneButton() {
-        self.doneButton.tintColor = UIColor.label
-    }
-    
-    @objc func didTapDoneButton() {
-//        let row = self.datePicker.selectedRow(inComponent: 0)
-//        self.datePicker.selectRow(row, inComponent: 0, animated: false)
-//        self.birthDayTextField.text
-
-        self.birthDayTextField.resignFirstResponder()
-    }
-    
-    func setupUI_cancleButton() {
-        self.cancleButton.tintColor = UIColor.label
-    }
-    
-    @objc func didTapCancleButton() {
-        self.birthDayTextField.resignFirstResponder()
-    }
-    
-    func setupUI_birthDayTextField() {
-        self.birthDayTextField.inputView = datePicker
-        self.birthDayTextField.inputAccessoryView = toolBar
-    }
-    
-    func setupUI_genderButton() {
-        genderMaleButton.isSelected = true
-        genderFemaleButton.isSelected = false
-        
-        genderMaleButton.alternateButton = [genderFemaleButton]
-        genderFemaleButton.alternateButton = [genderMaleButton]
-    }
 }

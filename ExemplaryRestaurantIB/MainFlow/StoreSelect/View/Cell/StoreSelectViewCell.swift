@@ -10,6 +10,9 @@ import UIKit
 class StoreSelectViewCell: UITableViewCell {
 
     @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet var starImageView: UIImageView!
+    @IBOutlet var averageLabel: UILabel!
+    @IBOutlet var reviewCountLabel: UILabel!
     @IBOutlet weak var mainMenuLabel: UILabel!
     
 }

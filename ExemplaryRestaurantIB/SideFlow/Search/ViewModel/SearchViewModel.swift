@@ -9,35 +9,71 @@ import Foundation
 
 class SearchViewModel {
     
+    // MARK: Model
     private var model = SearchModel()
     
-    private let shared = StandardViewModel.shared
-    
-    
-    
-    var storesPropertys: [(String, String, String)] {
-        return model.storesPropertys
+
+    var storeList: [Store] {
+        return self.model.storeList
     }
     
-    var filteringStoresPropertys: [(String, String, String)] {
-        return model.filteringStoresPropertys
+    var searchingStoreList: [Store] {
+        return self.model.searchingStoreList
     }
     
+}
+
+// MARK: Life Cycle
+extension SearchViewModel {
     
+    func viewDidLoad() {
+        self.model.storeList = StandardViewModel.shared.storeList
+    }
+
+}
+
+// searchResultsUpdating
+extension SearchViewModel {
     
-    func setupStoresPropertys() {
-//        model.storesPropertys = shared.pulloutSearchUseStoresPropertys()
+    func updateSearchResults(for searchController: UISearchController, completionHandler: (UITableViewController) -> ()) {
+        
+        guard let vc = searchController.searchResultsController as? UITableViewController,
+              let text = searchController.searchBar.text?.lowercased() else {return}
+        
+        let searchingStoreList = storeList.filter { $0.name!.lowercased().contains(text) }
+        
+        self.model.searchingStoreList = searchingStoreList
+        
+        completionHandler(vc)
+    }
+
+    
+}
+
+// tableViewDelegate
+extension SearchViewModel {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        return searchingStoreList.count
     }
     
-    
-    func setupFilteringStoresPropertys(filteringStoresPropertys: [(String, String, String)]) {
-        model.filteringStoresPropertys = filteringStoresPropertys
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell()
+        cell.textLabel?.text = searchingStoreList[indexPath.row].name
+        
+        return cell
     }
     
-//    func setupResultStore(storePropertys: (String, String, String)) -> Store {
-////        let store = shared.pulloutResultStore(storePropertys)
-//        return store
-//    }
-//
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath, completionHandler: (StoreInfoViewController) -> ()) {
+        
+        guard let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "StoreInfoViewController") as? StoreInfoViewController else {return}
+        
+        let store = searchingStoreList[indexPath.row]
+        
+        vc.vm.createModel_store(store: store)
+        
+        completionHandler(vc)
+    }
     
 }

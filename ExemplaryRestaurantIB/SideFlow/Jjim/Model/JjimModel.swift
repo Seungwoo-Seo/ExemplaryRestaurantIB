@@ -11,11 +11,9 @@ import FirebaseAuth
 
 struct JjimModel {
     
-    let ref = Database.database().reference().child("UserJjimList")
+    let ref = Database.database().reference()
     var handle: AuthStateDidChangeListenerHandle?
     
-    var userUID: String?
-    
-    var storeList: [Store] = []
+    var containerList: [ContainerJjim] = []
     
 }

@@ -27,14 +27,6 @@ class StoreSelectViewController: UIViewController {
     
 }
 
-private extension StoreSelectViewController {
-    
-    func setupUI() {
-        self.storeTableView.register(UINib(nibName: "StoreSelectViewCell", bundle: nil), forCellReuseIdentifier: "StoreSelectViewCell")
-    }
-    
-}
-
 extension StoreSelectViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -49,11 +41,17 @@ extension StoreSelectViewController: UITableViewDataSource, UITableViewDelegate 
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        vm.tableView(tableView, didSelectRowAt: indexPath) { [weak self] vc in
-            self?.navigationController?.pushViewController(vc, animated: true)
+        vm.tableView(tableView, didSelectRowAt: indexPath) { vc in
+            self.navigationController?.pushViewController(vc, animated: true)
         }
     }
     
 }
 
-
+private extension StoreSelectViewController {
+    
+    func setupUI() {
+        self.storeTableView.register(UINib(nibName: "StoreSelectViewCell", bundle: nil), forCellReuseIdentifier: "StoreSelectViewCell")
+    }
+    
+}

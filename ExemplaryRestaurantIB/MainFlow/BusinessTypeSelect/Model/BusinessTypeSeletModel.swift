@@ -34,7 +34,8 @@ struct BusinessTypeSeletModel {
         "공공기관": "public",
         "까페": "cafe",
         "김밥(도시락)": "kimbap",
-        "산업체": "industry"
+        "산업체": "industry",
+        "패밀리레스트랑": "restaurant"
     ]
     
     // 현재 행정구 명과 코드

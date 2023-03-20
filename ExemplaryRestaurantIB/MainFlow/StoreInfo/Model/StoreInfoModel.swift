@@ -13,68 +13,35 @@ import FirebaseStorage
 
 struct StoreInfoModel {
     
-    var store: Store?
-    
-    var coordinate: CLLocationCoordinate2D?
-    
-    // auth
-    var handle: AuthStateDidChangeListenerHandle?
-    
-    // firebase
-    let ref = Database.database().reference()
-    
-    // storage
-    let storageRef = Storage.storage().reference()
+    var handle: AuthStateDidChangeListenerHandle?   // Auth
+    let ref = Database.database().reference()       // FIR
+    let storageRef = Storage.storage().reference()  // FIS
     
     var userUID: String?
     
+    // 최종 모범음식점
+    var store: Store?
     
-    // server
-    var storeStarScore: Int = 0
-    var storeAverage: Double = 0.0
-    var storeReviewCount: Int = 0
+    // mapCell
+    var coordinate: CLLocationCoordinate2D?
     
+    // storeInfoCell
+    var reviewAverage: Double = 0.0
+    var reviewCount: Int = 0
+    var jjimcount: Int = 0
     
+    var isJjim: Bool = false
     
-    
-
-    // jjimButtonisSelected
-    var jjimIsSelected: Bool = false
-    
-    
-    
-    // 로그인을 했는지 안했는지 알려줄 프로퍼티
-    var checkLogin: Bool = false
+    // storeReviewCell
+    var isReview: Bool = false
     
     
-    // 해당 스토어의 리뷰들
+    var urlList: [URL] = []
     var storeReviewList: [StoreReview] = []
-    
-    // 각 리뷰에 이미지
-    var totalReviewImageList: [String: [UIImage?]] = [:]
-    
-    // storeReviewcell collectionview 에서 사용할
-    var reviewImageList: [UIImage?] = []
+    var containerList: [ContainerStoreReview] = []
     
     
     
-    
-    
-    var finalStoreReviewList: [FinalStoreReview] = []
-    
-    
-    
-    
-    // MARK: Reivew 관련
-    var userImage: UIImage?
-    var userName: String?
-    var starScore: Int?
-    var reviewImage: UIImage?
-    var reviewText: String?
+    var reviewSnapshots: [DataSnapshot] = []
     
 }
-
-
-
-    
-

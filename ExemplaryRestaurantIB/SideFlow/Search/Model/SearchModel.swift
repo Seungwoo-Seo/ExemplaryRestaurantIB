@@ -8,9 +8,9 @@
 import Foundation
 
 struct SearchModel {
-
-    var storesPropertys: [(String, String, String)] = []
-    
-    var filteringStoresPropertys: [(String, String, String)] = []
-    
+    // 전체 가게 목록
+    var storeList: [Store] = []
+    // 현재 검색 목록
+    var searchingStoreList: [Store] = []
+        
 }

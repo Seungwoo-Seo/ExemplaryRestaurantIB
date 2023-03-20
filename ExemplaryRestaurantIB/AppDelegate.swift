@@ -11,17 +11,12 @@ import FirebaseCore
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
-    let shared = StandardViewModel.shared
-    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        shared.fetchData()
-        
+        StandardViewModel.shared.fetchData()
         FirebaseApp.configure()
-                
+        
         return true
     }
     
 }
-
-

@@ -6,16 +6,18 @@
 //
 
 import Foundation
-import UIKit
+import FirebaseDatabase
 
 struct StoreSelectModel {
  
+    let ref: DatabaseReference = Database.database().reference()
+    
     var businessTypeList: [String] = []
     var currentBusinessType: String = ""
     var nowGooType: (gooName: String, gooCode: String?) = ("", nil)
     
     var viewControllers: [UIViewController] = []
+    
     var storeList: [Store] = []
-    
-    
+    var containerList: [ContainerStoreRating] = []
 }
