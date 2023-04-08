@@ -54,7 +54,6 @@
 		5744BEC52954DD4600ACCC65 /* ContainerStoreReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5744BEC42954DD4600ACCC65 /* ContainerStoreReview.swift */; };
 		5744BECA295CBE1200ACCC65 /* LodingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5744BEC9295CBE1200ACCC65 /* LodingView.swift */; };
 		576315FD294414D400860137 /* PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 576315FC294414D400860137 /* PromiseKit */; };
-		576F7B75292B897900C79E19 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 576F7B74292B897900C79E19 /* TestViewController.swift */; };
 		576F7B78292CBCC600C79E19 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 576F7B77292CBCC600C79E19 /* Alamofire */; };
 		576F7B7B292E5FDA00C79E19 /* BusinessTypeSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 576F7B7A292E5FDA00C79E19 /* BusinessTypeSelectViewController.swift */; };
 		576F7B7D292E635B00C79E19 /* BusinessTypeSelectHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 576F7B7C292E635B00C79E19 /* BusinessTypeSelectHeaderView.swift */; };
@@ -212,7 +211,6 @@
 		5744BEC129537B8000ACCC65 /* ContainerUserReview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerUserReview.swift; sourceTree = "<group>"; };
 		5744BEC42954DD4600ACCC65 /* ContainerStoreReview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerStoreReview.swift; sourceTree = "<group>"; };
 		5744BEC9295CBE1200ACCC65 /* LodingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LodingView.swift; sourceTree = "<group>"; };
-		576F7B74292B897900C79E19 /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		576F7B7A292E5FDA00C79E19 /* BusinessTypeSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessTypeSelectViewController.swift; sourceTree = "<group>"; };
 		576F7B7C292E635B00C79E19 /* BusinessTypeSelectHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessTypeSelectHeaderView.swift; sourceTree = "<group>"; };
 		576F7B7E292E64EE00C79E19 /* GooSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GooSelectView.swift; sourceTree = "<group>"; };
@@ -1123,7 +1121,6 @@
 				57F0CE2C289FCB66004232F6 /* AppDelegate.swift */,
 				57F0CE2E289FCB66004232F6 /* SceneDelegate.swift */,
 				57F0CE32289FCB66004232F6 /* Main.storyboard */,
-				576F7B74292B897900C79E19 /* TestViewController.swift */,
 				57F0CE35289FCB68004232F6 /* Assets.xcassets */,
 				57F0CE37289FCB68004232F6 /* LaunchScreen.storyboard */,
 				57F0CE3A289FCB68004232F6 /* Info.plist */,
@@ -1597,7 +1594,6 @@
 				57F0CE2D289FCB66004232F6 /* AppDelegate.swift in Sources */,
 				57F0CE2F289FCB66004232F6 /* SceneDelegate.swift in Sources */,
 				57E4FA9F291D3A52003E9508 /* StoreInfoViewController.swift in Sources */,
-				576F7B75292B897900C79E19 /* TestViewController.swift in Sources */,
 				57F710FE29654F2300A2EFE8 /* MyChangeCellDelegate.swift in Sources */,
 				57CA185228E2222400D3D28D /* Cell1.swift in Sources */,
 				57CA185E28E2229D00D3D28D /* Cell6.swift in Sources */,

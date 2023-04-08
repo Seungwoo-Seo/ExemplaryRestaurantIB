@@ -148,7 +148,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cCd-YT-1aZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2787" y="1433"/>
+            <point key="canvasLocation" x="2783" y="1525"/>
         </scene>
         <!--My-->
         <scene sceneID="JC8-Qh-Msq">
@@ -194,14 +194,14 @@
                             <tableViewSection id="eaH-vS-9fN">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell1" id="dvX-5O-eiX" customClass="Cell1" customModule="ExemplaryRestaurantIB" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="202.5" width="414" height="62"/>
+                                        <rect key="frame" x="0.0" y="202.5" width="414" height="61"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="dvX-5O-eiX" id="unO-Fj-TUF">
-                                            <rect key="frame" x="0.0" y="0.0" width="383.5" height="62"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="383.5" height="61"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="찜" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TS8-OA-SkA">
-                                                    <rect key="frame" x="20" y="20" width="335.5" height="22"/>
+                                                    <rect key="frame" x="20" y="20" width="335.5" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -216,14 +216,14 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell2" id="1Qp-zG-vii" customClass="Cell2" customModule="ExemplaryRestaurantIB" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="264.5" width="414" height="62"/>
+                                        <rect key="frame" x="0.0" y="263.5" width="414" height="61"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="1Qp-zG-vii" id="Qc6-HX-l29">
-                                            <rect key="frame" x="0.0" y="0.0" width="383.5" height="62"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="383.5" height="61"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="리뷰내역" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hKN-gR-eFp">
-                                                    <rect key="frame" x="20" y="20" width="335.5" height="22"/>
+                                                    <rect key="frame" x="20" y="20" width="335.5" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -242,14 +242,14 @@
                             <tableViewSection id="FZj-9m-nep">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell3" id="r3r-dr-NJy" customClass="Cell3" customModule="ExemplaryRestaurantIB" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="362.5" width="414" height="41"/>
+                                        <rect key="frame" x="0.0" y="360.5" width="414" height="41.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="r3r-dr-NJy" id="zma-ar-lVL">
-                                            <rect key="frame" x="0.0" y="0.0" width="383.5" height="41"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="383.5" height="41.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="공지사항" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ULy-kP-qYS">
-                                                    <rect key="frame" x="20" y="10" width="343.5" height="21"/>
+                                                    <rect key="frame" x="20" y="10" width="343.5" height="21.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -264,14 +264,14 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell4" id="noE-ag-dEX" customClass="Cell4" customModule="ExemplaryRestaurantIB" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="403.5" width="414" height="41"/>
+                                        <rect key="frame" x="0.0" y="402" width="414" height="41.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="noE-ag-dEX" id="Y94-XQ-USI">
-                                            <rect key="frame" x="0.0" y="0.0" width="383.5" height="41"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="383.5" height="41.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="이벤트" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ntA-aq-3Lh">
-                                                    <rect key="frame" x="20" y="10" width="343.5" height="21"/>
+                                                    <rect key="frame" x="20" y="10" width="343.5" height="21.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -286,14 +286,14 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell5" id="D6e-Ax-cVj" customClass="Cell5" customModule="ExemplaryRestaurantIB" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="444.5" width="414" height="41"/>
+                                        <rect key="frame" x="0.0" y="443.5" width="414" height="41.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="D6e-Ax-cVj" id="T8x-Gx-LSa">
-                                            <rect key="frame" x="0.0" y="0.0" width="383.5" height="41"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="383.5" height="41.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="고객센터" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Uf-kb-3d8">
-                                                    <rect key="frame" x="20" y="10" width="343.5" height="21"/>
+                                                    <rect key="frame" x="20" y="10" width="343.5" height="21.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -308,14 +308,14 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell6" id="tSq-3H-e6h" customClass="Cell6" customModule="ExemplaryRestaurantIB" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="485.5" width="414" height="41"/>
+                                        <rect key="frame" x="0.0" y="485" width="414" height="41.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="tSq-3H-e6h" id="6hm-uP-Fzb">
-                                            <rect key="frame" x="0.0" y="0.0" width="383.5" height="41"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="383.5" height="41.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="환경설정" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uy4-hG-LlR">
-                                                    <rect key="frame" x="20" y="10" width="343.5" height="21"/>
+                                                    <rect key="frame" x="20" y="10" width="343.5" height="21.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -330,14 +330,14 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell7" id="wgs-aL-Vj9" customClass="Cell7" customModule="ExemplaryRestaurantIB" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="526.5" width="414" height="41"/>
+                                        <rect key="frame" x="0.0" y="526.5" width="414" height="41.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="wgs-aL-Vj9" id="ugY-Ri-Lug">
-                                            <rect key="frame" x="0.0" y="0.0" width="383.5" height="41"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="383.5" height="41.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="약관 및 정책" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ghw-76-cmp">
-                                                    <rect key="frame" x="20" y="10" width="343.5" height="21"/>
+                                                    <rect key="frame" x="20" y="10" width="343.5" height="21.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -352,14 +352,14 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell8" id="Qby-YY-GhC" customClass="Cell8" customModule="ExemplaryRestaurantIB" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="567.5" width="414" height="42"/>
+                                        <rect key="frame" x="0.0" y="568" width="414" height="41"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Qby-YY-GhC" id="TUj-H6-HgZ">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="42"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="41"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="현재 버전 1.0.0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wEK-1n-2yF">
-                                                    <rect key="frame" x="20" y="10" width="374" height="22"/>
+                                                    <rect key="frame" x="20" y="10" width="374" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -401,7 +401,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PiS-p1-MEZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4557.971014492754" y="775.44642857142856"/>
+            <point key="canvasLocation" x="3648" y="781"/>
         </scene>
         <!--My Change View Controller-->
         <scene sceneID="Pe2-bF-58F">
@@ -442,13 +442,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="diJ-RA-1fo">
-                                <rect key="frame" x="0.0" y="48" width="414" height="799"/>
+                                <rect key="frame" x="0.0" y="48" width="414" height="765"/>
                                 <connections>
                                     <segue destination="Xz5-FY-K8C" kind="embed" identifier="Segue_StoreSelectTabViewController" id="vqG-5X-93L"/>
                                 </connections>
                             </containerView>
                             <tabBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ht9-Xz-baT">
-                                <rect key="frame" x="0.0" y="847" width="414" height="49"/>
+                                <rect key="frame" x="0.0" y="813" width="414" height="83"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <items>
                                     <tabBarItem title="검색" image="magnifyingglass" catalog="system" selectedImage="magnifyingglass" id="xXV-jw-ueI"/>
@@ -933,7 +933,7 @@
             <objects>
                 <viewController id="Xz5-FY-K8C" customClass="StoreSelectTabViewController" customModule="ExemplaryRestaurantIB" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="tc9-32-2Y9">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="799"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="765"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="Y31-K2-Dc7"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
