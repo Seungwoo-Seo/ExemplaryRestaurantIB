@@ -11,10 +11,11 @@ import SnapKit
 class StoreContentCell: UITableViewCell {
     
     lazy var showStoreReviewButton: UIButton = {
-        let button = UIButton()
-        button.tintColor = .black
-        button.setTitleColor(.black, for: .normal)
-        button.setTitle("리뷰 보기", for: .normal)
+        var config = UIButton.Configuration.filled()
+        config.title = "리뷰 보기"
+        config.buttonSize = .medium
+        
+        let button = UIButton(configuration: config)
         button.addTarget(self, action: #selector(didTapShowStoreReviewButton(_:)), for: .touchUpInside)
         
         return button
@@ -48,7 +49,8 @@ private extension StoreContentCell {
         [showStoreReviewButton].forEach { contentView.addSubview($0) }
         
         showStoreReviewButton.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.bottom.equalToSuperview().inset(20)
+            make.leading.trailing.equalToSuperview().inset(20)
         }
     }
     

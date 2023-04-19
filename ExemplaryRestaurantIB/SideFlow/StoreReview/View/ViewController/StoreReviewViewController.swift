@@ -12,6 +12,8 @@ class StoreReviewViewController: UIViewController {
     
     lazy var storeReviewTableView: UITableView = {
         let tableView = UITableView()
+        tableView.showsVerticalScrollIndicator = false
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: 15.0, bottom: 0, right: 15.0)
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(StoreReviewCell.self, forCellReuseIdentifier: "StoreReviewCell")

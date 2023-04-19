@@ -126,6 +126,10 @@ extension StoreReviewViewModel {
         cell.storeReviewImageCollectionView.snp.updateConstraints { make in
             make.height.equalTo(0)
         }
+        cell.storeReviewLabel.snp.updateConstraints { make in
+            make.top.equalTo(cell.storeReviewImageCollectionView.snp.bottom)
+        }
+        
         cell.pageControl.numberOfPages = 0
         cell.storeReviewLabel.text = nil
         
@@ -153,6 +157,9 @@ extension StoreReviewViewModel {
             cell.vm.createModel_imageUrlList(reviewImageURL)
             cell.storeReviewImageCollectionView.snp.updateConstraints { make in
                 make.height.equalTo(200)
+            }
+            cell.storeReviewLabel.snp.updateConstraints { make in
+                make.top.equalTo(cell.storeReviewImageCollectionView.snp.bottom).offset(10)
             }
             cell.storeReviewImageCollectionView.reloadData()
         }

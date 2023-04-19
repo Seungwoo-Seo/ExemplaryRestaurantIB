@@ -42,43 +42,37 @@ extension BusinessTypeSelectViewModel {
     }
     
     func didTapGooSelectButton(_ sender: UIButton,
-                               navigationItem: UINavigationItem,
-                               view: UIView,
-                               hazyView: HazyView,
-                               gooSelectView: GooSelectView) {
+                               vc: BusinessTypeSelectViewController) {
         
-        navigationItem.leftBarButtonItems?.forEach { $0.isEnabled = false }
-        navigationItem.rightBarButtonItems?.forEach { $0.isEnabled = false }
+        vc.navigationItem.leftBarButtonItems?.forEach { $0.isEnabled = false }
+        vc.navigationItem.rightBarButtonItems?.forEach { $0.isEnabled = false }
         
-        gooSelectView.snp.remakeConstraints { make in
+        vc.gooSelectView.snp.remakeConstraints { make in
             make.height.equalToSuperview().multipliedBy(0.6)
             make.leading.trailing.bottom.equalToSuperview()
         }
         
-        UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: {
-            hazyView.alpha = 0.5
-            view.layoutIfNeeded()
+        UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: { [weak vc] in
+            vc?.hazyView.alpha = 0.5
+            vc?.view.layoutIfNeeded()
         })
         
     }
     
     func didTapNavigationBar(_ sender: UINavigationBar,
-                             navigationItem: UINavigationItem,
-                             view: UIView,
-                             hazyView: HazyView,
-                             gooSelectView: GooSelectView) {
+                             vc: BusinessTypeSelectViewController) {
         
-        navigationItem.leftBarButtonItems?.forEach { $0.isEnabled = true }
-        navigationItem.rightBarButtonItems?.forEach { $0.isEnabled = true }
+        vc.navigationItem.leftBarButtonItems?.forEach { $0.isEnabled = true }
+        vc.navigationItem.rightBarButtonItems?.forEach { $0.isEnabled = true }
         
-        gooSelectView.snp.remakeConstraints { make in
+        vc.gooSelectView.snp.remakeConstraints { make in
             make.height.equalTo(0)
             make.leading.trailing.bottom.equalToSuperview()
         }
         
-        UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: {
-            hazyView.alpha = 0.0
-            view.layoutIfNeeded()
+        UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: { [weak vc] in
+            vc?.hazyView.alpha = 0.0
+            vc?.view.layoutIfNeeded()
         })
     }
     

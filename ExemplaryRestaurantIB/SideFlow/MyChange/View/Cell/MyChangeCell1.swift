@@ -81,6 +81,7 @@ class MyChangeCell1: UITableViewCell {
         let textField = UITextField()
         textField.borderStyle = .roundedRect
         textField.font = .systemFont(ofSize: 14.0, weight: .regular)
+        textField.isSecureTextEntry = true
         textField.isEnabled = false
         textField.delegate = self
         
@@ -102,6 +103,7 @@ class MyChangeCell1: UITableViewCell {
         textField.placeholder = "8-20자 이내"
         textField.borderStyle = .roundedRect
         textField.font = .systemFont(ofSize: 14.0, weight: .regular)
+        textField.isSecureTextEntry = true
         textField.isEnabled = false
         textField.delegate = self
         

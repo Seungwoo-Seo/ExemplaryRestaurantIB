@@ -121,8 +121,10 @@ extension UserReviewViewModel {
             cell.userReviewImageCollectionView.snp.updateConstraints { make in
                 make.height.equalTo(200)
             }
-            cell.userReviewTextLabel.snp.updateConstraints { make in
+            cell.userReviewTextLabel.snp.remakeConstraints { make in
                 make.top.equalTo(cell.userReviewImageCollectionView.snp.bottom).offset(10)
+                make.leading.trailing.equalTo(cell.userReviewImageCollectionView)
+                make.bottom.equalToSuperview().inset(10)
             }
             
             cell.userReviewImageCollectionView.reloadData()
@@ -146,8 +148,10 @@ extension UserReviewViewModel {
         cell.userReviewImageCollectionView.snp.updateConstraints { make in
             make.height.equalTo(0)
         }
-        cell.userReviewTextLabel.snp.updateConstraints { make in
+        cell.userReviewTextLabel.snp.remakeConstraints { make in
             make.top.equalTo(cell.userReviewImageCollectionView.snp.bottom)
+            make.leading.trailing.equalTo(cell.userReviewImageCollectionView)
+            make.bottom.equalToSuperview().inset(10)
         }
         
         cell.pageControl.numberOfPages = 0
@@ -334,7 +338,7 @@ private extension UserReviewViewModel {
     
     private func deleteReviewImageList(_ userUID: String?, cell: UserReviewCell) -> Promise<Void> {
         return Promise { seal in
-            guard let userUID = userUID else {seal.reject(UserReviewError.notLogin); return}
+            guard let _ = userUID else {seal.reject(UserReviewError.notLogin); return}
             guard let reviewImageUrlList = cell.vm.model.container?.userReview.reviewImageURL else {seal.fulfill(Void()); return}
             
             let group = DispatchGroup()
@@ -370,7 +374,7 @@ private extension UserReviewViewModel {
     
     private func deleteStoreReview(_ userUID: String?, cell: UserReviewCell) -> Promise<Void> {
         return Promise { seal in
-            guard let userUID = userUID else {seal.reject(UserReviewError.notLogin); return}
+            guard let _ = userUID else {seal.reject(UserReviewError.notLogin); return}
             guard let userReview = cell.vm.model.container?.userReview else {seal.reject(UserReviewError.notReview); return}
             
             let storeUID = userReview.storeUID
@@ -401,7 +405,7 @@ private extension UserReviewViewModel {
     
     private func updateStoreInfo(_ userUID: String?, cell: UserReviewCell) -> Promise<Void> {
         return Promise { seal in
-            guard let userUID = userUID else {seal.reject(UserReviewError.notLogin); return}
+            guard let _ = userUID else {seal.reject(UserReviewError.notLogin); return}
             guard let userReview = cell.vm.model.container?.userReview else {seal.reject(UserReviewError.notReview); return}
             
             let storeUID = userReview.storeUID

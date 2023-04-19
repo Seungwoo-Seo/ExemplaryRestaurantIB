@@ -14,6 +14,8 @@ class UserReviewViewController: UIViewController {
     
     lazy var userReviewTableView: UITableView = {
         let tableView = UITableView()
+        tableView.showsVerticalScrollIndicator = false
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: 15.0, bottom: 0, right: 15.0)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(UserReviewCell.self, forCellReuseIdentifier: "UserReviewCell")

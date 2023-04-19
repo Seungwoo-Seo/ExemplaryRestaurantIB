@@ -6,22 +6,142 @@
 //
 
 import UIKit
+import SnapKit
 import Cosmos
 import PhotosUI
 import FirebaseDatabase
 import FirebaseStorage
 
 final class ReviewWriteViewController: UIViewController {
+        
+    lazy var storeNameLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .black
+        label.textAlignment = .center
+        label.font = .systemFont(ofSize: 25.0, weight: .bold)
+        
+        return label
+    }()
     
-    // MARK: @IBOutlet
-    @IBOutlet weak var storeNameLabel: UILabel!
-    @IBOutlet weak var cosomosView: CosmosView!
-    @IBOutlet weak var reviewWriteTextView: UITextView!
-    @IBOutlet weak var textCountLabel: UILabel!
-    @IBOutlet weak var photoAddButton: UIButton!
-    @IBOutlet weak var cameraButton: UIButton!
-    @IBOutlet weak var photoCollectionView: UICollectionView!
- 
+    lazy var cosmosView: CosmosView = {
+        let cosmosView = CosmosView()
+        cosmosView.settings.fillMode = .full
+        cosmosView.settings.filledColor = .yellow
+        cosmosView.settings.filledBorderColor = .black
+        cosmosView.settings.emptyBorderColor = .black
+        cosmosView.settings.totalStars = 5
+        cosmosView.rating = 0
+        cosmosView.settings.starSize = 35
+        cosmosView.settings.starMargin = 5
+        cosmosView.didFinishTouchingCosmos = self.didFinishTouchingCosmos()
+        
+        return cosmosView
+    }()
+    
+    lazy var reviewWriteTextView: UITextView = {
+        let textView = UITextView()
+        textView.text = "음식 맛, 서비스 등 후기를 작성해주세요."
+        textView.font = .systemFont(ofSize: 17.0, weight: .regular)
+        textView.textColor = .systemGray
+        textView.layer.borderWidth = 1
+        textView.layer.borderColor = UIColor.black.cgColor
+        textView.delegate = self
+        
+        return textView
+    }()
+    
+    lazy var textCountLabel: UILabel = {
+        let label = UILabel()
+        label.text = "(0/200)"
+        label.textColor = .systemBlue
+        label.font = .systemFont(ofSize: 17.0, weight: .regular)
+        
+        return label
+    }()
+    
+    lazy var photoPicker: PHPickerViewController = {
+        var config = PHPickerConfiguration(photoLibrary: .shared())
+        config.filter = .images
+        config.selection = .ordered
+        config.selectionLimit = 3
+        
+        let picker = PHPickerViewController(configuration: config)
+        picker.delegate = self
+        
+        return picker
+    }()
+    
+    lazy var photoAddButton: UIButton = {
+        var config = UIButton.Configuration.filled()
+        config.title = "사진 추가"
+        config.image = UIImage(systemName: "photo")
+        config.imagePlacement = .top
+        config.imagePadding = 5.0
+        config.buttonSize = .medium
+        
+        let button = UIButton(configuration: config)
+        button.addTarget(self, action: #selector(didTapPhotoAddButton(_:)), for: .touchUpInside)
+        
+        return button
+    }()
+    
+    lazy var cameraPicker: UIImagePickerController = {
+        let picker = UIImagePickerController()
+        picker.sourceType = .camera
+        picker.allowsEditing = false
+        picker.cameraDevice = .front
+        picker.cameraCaptureMode = .photo
+        picker.mediaTypes = ["public.image"]
+        picker.delegate = self
+        
+        return picker
+    }()
+    
+    lazy var cameraButton: UIButton = {
+        var config = UIButton.Configuration.filled()
+        config.title = "직접 촬영"
+        config.image = UIImage(systemName: "camera")
+        config.imagePlacement = .top
+        config.imagePadding = 5.0
+        config.buttonSize = .medium
+        
+        let button = UIButton(configuration: config)
+        button.addTarget(self, action: #selector(didTapCameraButton(_:)), for: .touchUpInside)
+        
+        return button
+    }()
+    
+    lazy var photoCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.minimumLineSpacing = 10.0
+        layout.scrollDirection = .horizontal
+        
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.register(PhotoCell.self, forCellWithReuseIdentifier: "PhotoCell")
+        
+        return collectionView
+    }()
+    
+    lazy var registerButton: UIButton = {
+        var attString = AttributedString("등록하기")
+        attString.font = .systemFont(ofSize: 25.0, weight: .regular)
+        attString.foregroundColor = .white
+        
+        var config = UIButton.Configuration.filled()
+        config.buttonSize = .medium
+        config.attributedTitle = attString
+        config.background.cornerRadius = 0
+        config.cornerStyle = .fixed
+        
+        let button = UIButton(configuration: config)
+        button.addTarget(self, action: #selector(didTapRegistrationButton(_:)), for: .touchUpInside)
+        
+        return button
+    }()
+    
     
     // MARK: ViewModel
     let vm = ReviewWriteViewModel()
@@ -31,131 +151,58 @@ final class ReviewWriteViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupUI()
+        vm.viewDidLoad(self)
+        setupLayout()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-    
-        vm.lastDance { [weak self] error in
-            if let error = error {
-                switch error {
-                case .notLogin:
-                    let alert = Alert.confirmAlert(title: "로그인 시 작성할 수 있습니다.") {
-                        self?.navigationController?.popViewController(animated: true)
-                    }
-                    self?.present(alert, animated: true)
-                    
-                case .userListReadError:
-                    let alert = Alert.confirmAlert(title: "현재 리뷰를 작성할 수 없습니다.")
-                    self?.present(alert, animated: true)
-                }
-            } else {
-                // loding stop
-            }
+        
+        vm.viewWillAppear(self) { [weak self] in
+            self?.present($0, animated: true)
         }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        vm.removeStateDidChangeListener()
+        vm.viewWillDisappear()
     }
     
     
-    // MARK: touchesBegan
+    // MARK: overrides
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)
-    }
-    
-    
-    // MARK: @IBAction
-    // MARK: photoAddButton
-    @IBAction func didTapPhotoAddButton(_ sender: UIButton) {
-        vm.didTapPhotoAddButton(self) { picker in
-            if let picker = picker {
-                self.present(picker, animated: true)
-            } else {
-                let alert = Alert.confirmAlert(title: "사진은 최대 3장까지 선택 가능합니다.")
-                self.present(alert, animated: true)
-            }
-        }
-    }
-    
-    // MARK: cameraButton
-    @IBAction func didTapCameraButton(_ sender: UIButton) {
-        vm.didTapCameraButton(sender, delegate: self) { [weak self] picker in
-            if let picker = picker {
-                self?.present(picker, animated: true)
-            } else {
-                let alert = UIAlertController(title: "현재 카메라 사용에 대한 접근 권한이 없습니다.",
-                                              message: "설정 > {앱 이름} 탭에서 접근을 활성화 할 수 있습니다.",
-                                              preferredStyle: .alert)
-                let cancel = UIAlertAction(title: "취소", style: .cancel) { _ in
-                    alert.dismiss(animated: true, completion: nil)
-                }
-                let goToSetting = UIAlertAction(title: "설정으로 이동하기", style: .default) { _ in
-                    guard let settingURL = URL(string: UIApplication.openSettingsURLString),
-                          UIApplication.shared.canOpenURL(settingURL) else { return }
-                    UIApplication.shared.open(settingURL, options: [:])
-                }
-                
-                [cancel, goToSetting].forEach { alert.addAction($0) }
-                
-                DispatchQueue.main.async {
-                    self?.present(alert, animated: true)
-                }
-            }
-        }
-    }
-    
-    // MARK: thumnailImageDeleteButton
-    @IBAction func didTapThumnailImageDeleteButton(_ sender: UIButton) {
         
-        vm.didTapThumnailImageDeleteButton(sender,
-                                           photoCollectionView: self.photoCollectionView)
+        vm.touchesBegan(touches, with: event, vc: self)
     }
     
-    // MARK: registrationButton
-    @IBAction func didTapRegistrationButton(_ sender: UIButton) {
-     
-        vm.didTapRegistrationButton(sender) { [weak self] error in
+
+    
+    // MARK: actions
+    func didFinishTouchingCosmos() -> (Double) -> () {
+        return vm.didFinishTouchingCosmos()
+    }
+    
+    @objc func didTapPhotoAddButton(_ sender: UIButton) {
+        vm.didTapPhotoAddButton(sender, vc: self) { alert in
+            self.present(alert, animated: true)
+        }
+    }
+    
+    @objc func didTapCameraButton(_ sender: UIButton) {
+        vm.didTapCameraButton(sender, vc: self) { [weak self] picker, alert in
+            guard alert == nil,
+                  let picker = picker else {
+                self?.present(alert!, animated: true); return}
             
-            if let error = error {
-                switch error {
-                case .conditionNotMet:
-                    print(error.localizedDescription)
-                    let alert = Alert.confirmAlert(title: "별점과 리뷰작성은 필수 입니다.")
-                    self?.present(alert, animated: true)
-                    
-                case .userReviewUpdateError:
-                    print(error.localizedDescription)
-                    let alert = Alert.confirmAlert(title: "현재 리뷰를 작성할 수 없습니다. 1")
-                    self?.present(alert, animated: true)
-                    
-                case .storeReviewUpdateError:
-                    print(error.localizedDescription)
-                    let alert = Alert.confirmAlert(title: "현재 리뷰를 작성할 수 없습니다. 2")
-                    self?.present(alert, animated: true)
-                    
-                case .reviewImagePutError:
-                    print(error.localizedDescription)
-                    let alert = Alert.confirmAlert(title: "현재 리뷰를 작성할 수 없습니다. 3")
-                    self?.present(alert, animated: true)
-                    
-                case .userInfoUpdateError:
-                    print(error.localizedDescription)
-                    let alert = Alert.confirmAlert(title: "현재 리뷰를 작성할 수 없습니다. 4")
-                    self?.present(alert, animated: true)
-                    
-                case .storeInfoUpdateError:
-                    print(error.localizedDescription)
-                    let alert = Alert.confirmAlert(title: "현재 리뷰를 작성할 수 없습니다. 5")
-                    self?.present(alert, animated: true)
-                }
-            } else {
-                self?.navigationController?.popViewController(animated: true)
-            }
+            self?.present(picker, animated: true)
+        }
+    }
+        
+    @objc func didTapRegistrationButton(_ sender: UIButton) {
+        vm.didTapRegistrationButton(sender, vc: self) { [weak self] in
+            self?.present($0, animated: true)
         }
     }
 
@@ -165,22 +212,43 @@ final class ReviewWriteViewController: UIViewController {
 extension ReviewWriteViewController: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        
         vm.textViewDidBeginEditing(textView)
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
-        
         vm.textViewDidEndEditing(textView)
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        
         return vm.textView(textView,
                            shouldChangeTextIn: range,
                            replacementText: text,
                            textCountLabel: self.textCountLabel)
     }
+    
+}
+
+// MARK: PHPickerViewControllerDelegate
+extension ReviewWriteViewController: PHPickerViewControllerDelegate {
+    
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        
+        vm.picker(picker, didFinishPicking: results, vc: self) { [weak self] in
+            self?.present($0, animated: true)
+        }
+    }
+        
+}
+
+// MARK: UIImagePickerControllerDelegate
+extension ReviewWriteViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        vm.imagePickerController(picker, didFinishPickingMediaWithInfo: info, vc: self) { [weak self] in
+            self?.present($0, animated: true)
+        }
+     }
     
 }
 
@@ -194,7 +262,7 @@ extension ReviewWriteViewController: UICollectionViewDataSource, UICollectionVie
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        return vm.collectionView(collectionView, cellForItemAt: indexPath)
+        return vm.collectionView(collectionView, cellForItemAt: indexPath, vc: self)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -204,71 +272,71 @@ extension ReviewWriteViewController: UICollectionViewDataSource, UICollectionVie
     
 }
 
-// MARK: PHPickerViewControllerDelegate
-extension ReviewWriteViewController: PHPickerViewControllerDelegate {
+extension ReviewWriteViewController: ReviewWriteCellDelegate {
     
-    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-        picker.dismiss(animated: true)
-        
-        vm.picker(picker, didFinishPicking: results) { error in
-            if let error = error {
-                switch error {
-                case .canLoadObjectError, .loadObjectError:
-                    let alert = Alert.confirmAlert(title: "사진을 불러 올 수 없습니다.")
-                    self.present(alert, animated: true)
-                }
-                
-            } else {
-                self.photoCollectionView.reloadData()
-            }
-        }
+    func didTapThumnailImageDeleteButton(_ sender: UIButton) {
+        vm.didTapThumnailImageDeleteButton(sender, vc: self)
     }
-        
-}
-
-// MARK: UIImagePickerControllerDelegate
-extension ReviewWriteViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        
-        vm.imagePickerController(picker, didFinishPickingMediaWithInfo: info) { [weak self] in
-            guard let self = self else {return}
-            
-            self.vm.didTapPhotoAddButton(self) { picker in
-                guard let picker = picker else {
-                    let alert = Alert.confirmAlert(title: "사진은 최대 3장까지 선택 가능합니다.")
-                    
-                    self.present(alert, animated: true)
-                    
-                    return
-                }
-                
-                self.present(picker, animated: true)
-            }
-        }
-     }
     
 }
 
 // MARK: Private
 private extension ReviewWriteViewController {
+            
+    func setupLayout() {
+        [
+            storeNameLabel,
+            cosmosView,
+            reviewWriteTextView,
+            textCountLabel,
+            photoAddButton,
+            cameraButton,
+            photoCollectionView,
+            registerButton
+        ].forEach { view.addSubview($0) }
         
-    func setupUI() {
-        // storeNameLabel
-        storeNameLabel.text = vm.storeName
+        storeNameLabel.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide).inset(20)
+            make.centerX.equalToSuperview()
+        }
         
-        // MARK: cosmosView
-        cosomosView.settings.fillMode = .full
-        cosomosView.didFinishTouchingCosmos = vm.didFinishTouchingCosmos()
+        cosmosView.snp.makeConstraints { make in
+            make.top.equalTo(storeNameLabel.snp.bottom).offset(15)
+            make.centerX.equalToSuperview()
+        }
         
-        // reviewWriteTextView
-        reviewWriteTextView.layer.borderWidth = 1
-        reviewWriteTextView.layer.borderColor = UIColor.black.cgColor
-        reviewWriteTextView.delegate = self
+        reviewWriteTextView.snp.makeConstraints { make in
+            make.top.equalTo(cosmosView.snp.bottom).offset(15)
+            make.leading.trailing.equalToSuperview().inset(50)
+            make.bottom.equalTo(view.snp.centerY)
+        }
         
-        // photoCollectionView
-        photoCollectionView.delegate = self
-        photoCollectionView.dataSource = self
+        textCountLabel.snp.makeConstraints { make in
+            make.top.equalTo(reviewWriteTextView.snp.bottom)
+            make.trailing.equalTo(reviewWriteTextView.snp.trailing)
+        }
+        
+        photoAddButton.snp.makeConstraints { make in
+            make.top.equalTo(textCountLabel.snp.bottom).offset(30)
+            make.leading.equalTo(reviewWriteTextView.snp.leading)
+        }
+        
+        cameraButton.snp.makeConstraints { make in
+            make.top.equalTo(photoAddButton.snp.bottom).offset(30)
+            make.leading.equalTo(photoAddButton.snp.leading)
+        }
+        
+        photoCollectionView.snp.makeConstraints { make in
+            make.top.equalTo(photoAddButton.snp.top)
+            make.leading.equalTo(photoAddButton.snp.trailing).offset(30)
+            make.trailing.equalTo(textCountLabel.snp.trailing)
+            make.bottom.equalTo(cameraButton.snp.bottom)
+        }
+        
+        registerButton.snp.makeConstraints { make in
+            make.bottom.equalTo(view.safeAreaLayoutGuide)
+            make.leading.trailing.equalToSuperview()
+        }
     }
     
 }

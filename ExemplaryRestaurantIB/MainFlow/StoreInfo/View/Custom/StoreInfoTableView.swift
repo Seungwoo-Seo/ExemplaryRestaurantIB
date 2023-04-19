@@ -12,9 +12,7 @@ class StoreInfoTableView: UITableView {
     let vm = StoreInfoViewModel()
         
     override func touchesShouldCancel(in view: UIView) -> Bool {
-
-        vm.touchesShouldCancel(in: view,
-                               superTouchesShouldCancel: super.touchesShouldCancel(in: view))
+        vm.touchesShouldCancel(in: view, superTouchesShouldCancel: super.touchesShouldCancel(in: view))
     }
     
 }

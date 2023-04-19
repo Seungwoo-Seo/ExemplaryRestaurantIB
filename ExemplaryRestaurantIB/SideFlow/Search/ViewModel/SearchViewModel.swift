@@ -36,7 +36,6 @@ extension SearchViewModel {
 extension SearchViewModel {
     
     func updateSearchResults(for searchController: UISearchController, completionHandler: (UITableViewController) -> ()) {
-        
         guard let vc = searchController.searchResultsController as? UITableViewController,
               let text = searchController.searchBar.text?.lowercased() else {return}
         

@@ -55,6 +55,7 @@ class UserReviewCell: UITableViewCell {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.isPagingEnabled = true
         collectionView.bounces = false
+        collectionView.showsHorizontalScrollIndicator = false
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.register(UserReviewImageCell.self, forCellWithReuseIdentifier: "UserReviewImageCell")
@@ -67,6 +68,8 @@ class UserReviewCell: UITableViewCell {
         control.pageIndicatorTintColor = .gray
         control.currentPageIndicatorTintColor = .white
         control.hidesForSinglePage = true
+        control.allowsContinuousInteraction = false
+        control.isUserInteractionEnabled = false
         
         return control
     }()

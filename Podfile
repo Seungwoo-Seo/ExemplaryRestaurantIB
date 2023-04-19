@@ -8,7 +8,5 @@ target 'ExemplaryRestaurantIB' do
   # Pods for ExemplaryRestaurantIB
   pod 'lottie-ios'
   pod 'RxSwift', '6.5.0'
-  pod 'RxCocoa', '6.5.0'
-
 
 end

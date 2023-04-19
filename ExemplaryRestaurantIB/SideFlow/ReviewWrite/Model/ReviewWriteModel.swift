@@ -16,8 +16,6 @@ struct ReviewWriteModel {
     let ref = Database.database().reference()
     let storageRef = Storage.storage().reference()
     
-    // 유저 식별자
-    var userUID: String?
     // 유저 이름
     var userName: String?
     // 스토어 식별자
@@ -30,10 +28,7 @@ struct ReviewWriteModel {
     // 리뷰내용
     var reviewText: String?
     // 리뷰 이미지
-//    var reviewImageList: [(image: UIImage, number: Int)] = []
-    
-    var reviewImageList: [(num: Int, image: UIImage)] = []
-    
+    var photoList: [Photo]?
 }
 
 

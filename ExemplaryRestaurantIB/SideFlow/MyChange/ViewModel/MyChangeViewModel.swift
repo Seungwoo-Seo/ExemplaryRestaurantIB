@@ -469,6 +469,7 @@ private extension MyChangeViewModel {
             
             alert.addTextField { textField in
                 textField.placeholder = "비밀번호를 입력하시오."
+                textField.isSecureTextEntry = true
             }
             
             vc.present(alert, animated: true)

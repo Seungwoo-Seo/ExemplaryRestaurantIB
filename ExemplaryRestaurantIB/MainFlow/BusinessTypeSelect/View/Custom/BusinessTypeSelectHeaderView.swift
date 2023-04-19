@@ -9,11 +9,8 @@ import UIKit
 
 class BusinessTypeSelectHeaderView: UIView {
     
-    // searchBar
     @IBOutlet weak var searchBar: UISearchBar!
-    // gooSelectButton
     @IBOutlet weak var gooSelectButton: UIButton!
-    // businessTypeSortButton
     @IBOutlet weak var businessTypeSortButton: UIButton!
     
     

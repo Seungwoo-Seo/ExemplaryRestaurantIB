@@ -154,6 +154,8 @@ private extension StoreInfoViewController {
         self.navigationItem.backButtonTitle = ""
         
         // tableView
+        tableView.showsVerticalScrollIndicator = false
+        tableView.separatorStyle = .none
         tableView.register(MapCell.self, forCellReuseIdentifier: "MapCell")
         tableView.register(StoreInfoCell.self, forCellReuseIdentifier: "StoreInfoCell")
         tableView.register(StoreContentCell.self, forCellReuseIdentifier: "StoreContentCell")

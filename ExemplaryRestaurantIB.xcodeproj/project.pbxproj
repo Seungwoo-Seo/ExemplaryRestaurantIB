@@ -49,6 +49,8 @@
 		57183FAD28BB5C0200A1BA03 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 57183FA928BA54EA00A1BA03 /* libsqlite3.tbd */; };
 		57183FAF28BB5C4D00A1BA03 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57183FAE28BB5C4D00A1BA03 /* Metal.framework */; };
 		5724EFEC297F2DFC001CDEEC /* StoreContentCelllDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5724EFEB297F2DFC001CDEEC /* StoreContentCelllDelegate.swift */; };
+		572949A9298F411100BA2A51 /* ReviewWriteCellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 572949A8298F411100BA2A51 /* ReviewWriteCellDelegate.swift */; };
+		572949AC298F4E6800BA2A51 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 572949AB298F4E6800BA2A51 /* Photo.swift */; };
 		5744BEBE29535BE000ACCC65 /* UserReviewCellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5744BEBD29535BE000ACCC65 /* UserReviewCellDelegate.swift */; };
 		5744BEC229537B8000ACCC65 /* ContainerUserReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5744BEC129537B8000ACCC65 /* ContainerUserReview.swift */; };
 		5744BEC52954DD4600ACCC65 /* ContainerStoreReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5744BEC42954DD4600ACCC65 /* ContainerStoreReview.swift */; };
@@ -207,6 +209,8 @@
 		57183FAA28BA553F00A1BA03 /* ExemplaryRestaurantIB-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ExemplaryRestaurantIB-Bridging-Header.h"; sourceTree = "<group>"; };
 		57183FAE28BB5C4D00A1BA03 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
 		5724EFEB297F2DFC001CDEEC /* StoreContentCelllDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreContentCelllDelegate.swift; sourceTree = "<group>"; };
+		572949A8298F411100BA2A51 /* ReviewWriteCellDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewWriteCellDelegate.swift; sourceTree = "<group>"; };
+		572949AB298F4E6800BA2A51 /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		5744BEBD29535BE000ACCC65 /* UserReviewCellDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserReviewCellDelegate.swift; sourceTree = "<group>"; };
 		5744BEC129537B8000ACCC65 /* ContainerUserReview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerUserReview.swift; sourceTree = "<group>"; };
 		5744BEC42954DD4600ACCC65 /* ContainerStoreReview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerStoreReview.swift; sourceTree = "<group>"; };
@@ -431,6 +435,22 @@
 				57183F7528BA543700A1BA03 /* MTMapCircle.h */,
 			);
 			path = Headers;
+			sourceTree = "<group>";
+		};
+		572949A7298F40F000BA2A51 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				572949A8298F411100BA2A51 /* ReviewWriteCellDelegate.swift */,
+			);
+			path = Protocol;
+			sourceTree = "<group>";
+		};
+		572949AA298F4E3500BA2A51 /* Custom */ = {
+			isa = PBXGroup;
+			children = (
+				572949AB298F4E6800BA2A51 /* Photo.swift */,
+			);
+			path = Custom;
 			sourceTree = "<group>";
 		};
 		5744BEBF29535BE600ACCC65 /* Protocol */ = {
@@ -1218,6 +1238,8 @@
 		57F536F328F1C57D00B54BAD /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				572949AA298F4E3500BA2A51 /* Custom */,
+				572949A7298F40F000BA2A51 /* Protocol */,
 				57E0AF4828F4870E00ADE562 /* ReviewWriteModel.swift */,
 			);
 			path = Model;
@@ -1592,6 +1614,7 @@
 				576F7BA9292F6AD800C79E19 /* GooTypeCell.swift in Sources */,
 				57CA182228DBB5BE00D3D28D /* JjimViewController.swift in Sources */,
 				57F0CE2D289FCB66004232F6 /* AppDelegate.swift in Sources */,
+				572949A9298F411100BA2A51 /* ReviewWriteCellDelegate.swift in Sources */,
 				57F0CE2F289FCB66004232F6 /* SceneDelegate.swift in Sources */,
 				57E4FA9F291D3A52003E9508 /* StoreInfoViewController.swift in Sources */,
 				57F710FE29654F2300A2EFE8 /* MyChangeCellDelegate.swift in Sources */,
@@ -1621,6 +1644,7 @@
 				57CA185428E2222C00D3D28D /* Cell2.swift in Sources */,
 				57CA183B28DCE87400D3D28D /* UserCreateViewController.swift in Sources */,
 				5724EFEC297F2DFC001CDEEC /* StoreContentCelllDelegate.swift in Sources */,
+				572949AC298F4E6800BA2A51 /* Photo.swift in Sources */,
 				57FCB4202913AD7C00CCEA52 /* UserCreateScrollView.swift in Sources */,
 				57C9464C29203C9200A4CE90 /* StoreInfoStackView1.swift in Sources */,
 				578B65912982051F00B35C2F /* StoreContentCell.swift in Sources */,
@@ -1801,7 +1825,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1839,7 +1863,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

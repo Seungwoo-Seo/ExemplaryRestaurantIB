@@ -10,13 +10,9 @@ import SnapKit
 
 class BusinessTypeSelectViewController: UIViewController {
     
-    // headerView
     @IBOutlet weak var headerView: BusinessTypeSelectHeaderView!
-    
-    // collectionView
     @IBOutlet weak var collectionView: UICollectionView!
-    
-    // bottom sheet
+
     lazy var hazyView: HazyView = {
         let view = HazyView(frame: .zero)
         view.backgroundColor = .gray
@@ -53,25 +49,17 @@ class BusinessTypeSelectViewController: UIViewController {
     
     // MARK: actions
     @IBAction func didTapMyButton(_ sender: UIBarButtonItem) {
-        vm.didTapMyButton(sender) { [weak self] vc in
-            self?.navigationController?.pushViewController(vc, animated: true)
+        vm.didTapMyButton(sender) {
+            self.navigationController?.pushViewController($0, animated: true)
         }
     }
     
     @IBAction func didTapGooSelectButton(_ sender: UIButton) {
-        vm.didTapGooSelectButton(sender,
-                                 navigationItem: navigationItem,
-                                 view: view,
-                                 hazyView: hazyView,
-                                 gooSelectView: gooSelectView)
+        vm.didTapGooSelectButton(sender, vc: self)
     }
     
     @objc func didTapNavigationBar(_ sender: UINavigationBar) {
-        vm.didTapNavigationBar(sender,
-                              navigationItem: navigationItem,
-                              view: view,
-                              hazyView: hazyView,
-                              gooSelectView: gooSelectView)
+        vm.didTapNavigationBar(sender, vc: self)
     }
     
 }
@@ -80,9 +68,8 @@ class BusinessTypeSelectViewController: UIViewController {
 extension BusinessTypeSelectViewController: UISearchBarDelegate {
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-
-        vm.searchBarTextDidBeginEditing(searchBar) { [weak self] vc in
-            self?.navigationController?.pushViewController(vc, animated: true)
+        vm.searchBarTextDidBeginEditing(searchBar) {
+            self.navigationController?.pushViewController($0, animated: true)
         }
     }
     
@@ -92,19 +79,15 @@ extension BusinessTypeSelectViewController: UISearchBarDelegate {
 extension BusinessTypeSelectViewController: BottomSheetDelegate {
     
     func didTapHazyView(_ tapGesture: UITapGestureRecognizer) {
-        vm.didTapHazyView(tapGesture,
-                          vc: self)
+        vm.didTapHazyView(tapGesture, vc: self)
     }
     
     func didTapCancelButton(_ button: UIButton) {
-        vm.didTapCancelButton(button,
-                              vc: self)
+        vm.didTapCancelButton(button, vc: self)
     }
     
     func didTapTableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        vm.didTapTableView(tableView,
-                           didSelectRowAt: indexPath,
-                           vc: self)
+        vm.didTapTableView(tableView, didSelectRowAt: indexPath, vc: self)
     }
     
 }
