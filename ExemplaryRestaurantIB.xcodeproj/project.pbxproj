@@ -62,8 +62,6 @@
 		576F7B7D292E635B00C79E19 /* BusinessTypeSelectHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 576F7B7C292E635B00C79E19 /* BusinessTypeSelectHeaderView.swift */; };
 		576F7B7F292E64EE00C79E19 /* GooSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 576F7B7E292E64EE00C79E19 /* GooSelectView.swift */; };
 		576F7B81292E681C00C79E19 /* BusinessTypeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 576F7B80292E681C00C79E19 /* BusinessTypeCell.swift */; };
-		576F7B83292E752A00C79E19 /* BusinessTypeSelectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 576F7B82292E752A00C79E19 /* BusinessTypeSelectViewModel.swift */; };
-		576F7B85292E756C00C79E19 /* BusinessTypeSeletModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 576F7B84292E756C00C79E19 /* BusinessTypeSeletModel.swift */; };
 		576F7BA9292F6AD800C79E19 /* GooTypeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 576F7BA8292F6AD800C79E19 /* GooTypeCell.swift */; };
 		57850E4728D7D5A200ADBBE7 /* StoreSelectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57850E4628D7D5A200ADBBE7 /* StoreSelectViewModel.swift */; };
 		57850E4928D7DDB100ADBBE7 /* StoreSelectModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57850E4828D7DDB100ADBBE7 /* StoreSelectModel.swift */; };
@@ -130,7 +128,7 @@
 		57E4FAA5291D3EF3003E9508 /* StoreInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E4FAA4291D3EF3003E9508 /* StoreInfoCell.swift */; };
 		57E4FAA9291D3F36003E9508 /* StoreReviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E4FAA8291D3F36003E9508 /* StoreReviewCell.swift */; };
 		57E4FAB0291E7E77003E9508 /* StoreInfoTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E4FAAF291E7E77003E9508 /* StoreInfoTableView.swift */; };
-		57E4FABC291EB9C4003E9508 /* StandardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E4FABB291EB9C4003E9508 /* StandardViewModel.swift */; };
+		57E4FABC291EB9C4003E9508 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E4FABB291EB9C4003E9508 /* NetworkManager.swift */; };
 		57E7614C292456930057B9C0 /* StoreReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E7614B292456930057B9C0 /* StoreReview.swift */; };
 		57E90A5928E3CF1300D5514B /* UserCreateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E90A5828E3CF1200D5514B /* UserCreateModel.swift */; };
 		57E90A5D28E3CFB200D5514B /* UserCreateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E90A5C28E3CFB200D5514B /* UserCreateViewModel.swift */; };
@@ -221,8 +219,6 @@
 		576F7B7C292E635B00C79E19 /* BusinessTypeSelectHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessTypeSelectHeaderView.swift; sourceTree = "<group>"; };
 		576F7B7E292E64EE00C79E19 /* GooSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GooSelectView.swift; sourceTree = "<group>"; };
 		576F7B80292E681C00C79E19 /* BusinessTypeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessTypeCell.swift; sourceTree = "<group>"; };
-		576F7B82292E752A00C79E19 /* BusinessTypeSelectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessTypeSelectViewModel.swift; sourceTree = "<group>"; };
-		576F7B84292E756C00C79E19 /* BusinessTypeSeletModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessTypeSeletModel.swift; sourceTree = "<group>"; };
 		576F7BA8292F6AD800C79E19 /* GooTypeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GooTypeCell.swift; sourceTree = "<group>"; };
 		57850E4628D7D5A200ADBBE7 /* StoreSelectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreSelectViewModel.swift; sourceTree = "<group>"; };
 		57850E4828D7DDB100ADBBE7 /* StoreSelectModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreSelectModel.swift; sourceTree = "<group>"; };
@@ -283,7 +279,7 @@
 		57E4FAA4291D3EF3003E9508 /* StoreInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreInfoCell.swift; sourceTree = "<group>"; };
 		57E4FAA8291D3F36003E9508 /* StoreReviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreReviewCell.swift; sourceTree = "<group>"; };
 		57E4FAAF291E7E77003E9508 /* StoreInfoTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreInfoTableView.swift; sourceTree = "<group>"; };
-		57E4FABB291EB9C4003E9508 /* StandardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardViewModel.swift; sourceTree = "<group>"; };
+		57E4FABB291EB9C4003E9508 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		57E7614B292456930057B9C0 /* StoreReview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreReview.swift; sourceTree = "<group>"; };
 		57E90A5828E3CF1200D5514B /* UserCreateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCreateModel.swift; sourceTree = "<group>"; };
 		57E90A5C28E3CFB200D5514B /* UserCreateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCreateViewModel.swift; sourceTree = "<group>"; };
@@ -353,6 +349,35 @@
 				6E45E5A74C2A5CD632FA4C8D /* Pods-ExemplaryRestaurantIB.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		5705802A2B4FBAC5005FAAEB /* Presentataion */ = {
+			isa = PBXGroup;
+			children = (
+				57F0CE32289FCB66004232F6 /* Main.storyboard */,
+				57850E3428D7878600ADBBE7 /* BusinessTypeSelect */,
+				57850E3528D787B300ADBBE7 /* StoreSelect */,
+				57850E3628D787BB00ADBBE7 /* StoreInfo */,
+				57CA184D28E221DA00D3D28D /* My */,
+				57F710EC2963ABB400A2EFE8 /* MyChange */,
+				57CA183928DCE6EB00D3D28D /* Login */,
+				57E90A5528E3CCDA00D5514B /* UserCreate */,
+				57F4BEB028E6EE4F00D4B159 /* Search */,
+				57CA183C28DEA02700D3D28D /* Jjim */,
+				57DEDEEA29354D990082673D /* UserReview */,
+				57E952022981B89F000CC40D /* StoreReview */,
+				57F536F128F1C12800B54BAD /* ReviewWrite */,
+			);
+			path = Presentataion;
+			sourceTree = "<group>";
+		};
+		5705802B2B4FC14A005FAAEB /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				57F0CE2C289FCB66004232F6 /* AppDelegate.swift */,
+				57F0CE2E289FCB66004232F6 /* SceneDelegate.swift */,
+			);
+			path = Application;
 			sourceTree = "<group>";
 		};
 		57183C4428B9CCE000A1BA03 /* ViewController */ = {
@@ -512,7 +537,6 @@
 			children = (
 				57850E3828D7884500ADBBE7 /* Model */,
 				57AF12A728C6CD1800F74C9E /* View */,
-				57850E3728D7883900ADBBE7 /* ViewModel */,
 			);
 			path = BusinessTypeSelect;
 			sourceTree = "<group>";
@@ -537,19 +561,10 @@
 			path = StoreInfo;
 			sourceTree = "<group>";
 		};
-		57850E3728D7883900ADBBE7 /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				576F7B82292E752A00C79E19 /* BusinessTypeSelectViewModel.swift */,
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
 		57850E3828D7884500ADBBE7 /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				57D45A38295F534E004941B8 /* Protocol */,
-				576F7B84292E756C00C79E19 /* BusinessTypeSeletModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -722,19 +737,22 @@
 		57AF12A728C6CD1800F74C9E /* View */ = {
 			isa = PBXGroup;
 			children = (
-				57D32282290D2BC00035B253 /* Custom */,
+				576F7B7C292E635B00C79E19 /* BusinessTypeSelectHeaderView.swift */,
+				576F7B7A292E5FDA00C79E19 /* BusinessTypeSelectViewController.swift */,
+				57CA181828DA51A200D3D28D /* BottomSheet */,
 				57AF12A428C6CCC000F74C9E /* Cell */,
-				57DC2C8D28A92E760028EB6D /* ViewController */,
 			);
 			path = View;
 			sourceTree = "<group>";
 		};
-		57B1CCEA28C15199006736EF /* resource */ = {
+		57B1CCEA28C15199006736EF /* Resource */ = {
 			isa = PBXGroup;
 			children = (
 				57C5A1A82975D55C00327398 /* checkmark.json */,
+				57F0CE35289FCB68004232F6 /* Assets.xcassets */,
+				57F0CE37289FCB68004232F6 /* LaunchScreen.storyboard */,
 			);
-			path = resource;
+			path = Resource;
 			sourceTree = "<group>";
 		};
 		57C38D9628F2E7FD00B5EC76 /* Cell */ = {
@@ -882,15 +900,6 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
-		57D32282290D2BC00035B253 /* Custom */ = {
-			isa = PBXGroup;
-			children = (
-				576F7B7C292E635B00C79E19 /* BusinessTypeSelectHeaderView.swift */,
-				57CA181828DA51A200D3D28D /* BottomSheet */,
-			);
-			path = Custom;
-			sourceTree = "<group>";
-		};
 		57D32283290F92DE0035B253 /* Custom */ = {
 			isa = PBXGroup;
 			children = (
@@ -937,14 +946,6 @@
 				57D72188296907750036B897 /* ReviewDelete.swift */,
 			);
 			path = JSON_Parsing;
-			sourceTree = "<group>";
-		};
-		57DC2C8D28A92E760028EB6D /* ViewController */ = {
-			isa = PBXGroup;
-			children = (
-				576F7B7A292E5FDA00C79E19 /* BusinessTypeSelectViewController.swift */,
-			);
-			path = ViewController;
 			sourceTree = "<group>";
 		};
 		57DC2C9028A92E9C0028EB6D /* ViewController */ = {
@@ -1048,7 +1049,7 @@
 		57E4FAB8291EB81A003E9508 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				57E4FABB291EB9C4003E9508 /* StandardViewModel.swift */,
+				57E4FABB291EB9C4003E9508 /* NetworkManager.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1136,15 +1137,10 @@
 		57F0CE2B289FCB66004232F6 /* ExemplaryRestaurantIB */ = {
 			isa = PBXGroup;
 			children = (
+				5705802B2B4FC14A005FAAEB /* Application */,
+				5705802A2B4FBAC5005FAAEB /* Presentataion */,
 				57850E3328D7876100ADBBE7 /* Standard */,
-				57F536F828F1C71300B54BAD /* MainFlow */,
-				57F536F928F1C74100B54BAD /* SideFlow */,
-				57B1CCEA28C15199006736EF /* resource */,
-				57F0CE2C289FCB66004232F6 /* AppDelegate.swift */,
-				57F0CE2E289FCB66004232F6 /* SceneDelegate.swift */,
-				57F0CE32289FCB66004232F6 /* Main.storyboard */,
-				57F0CE35289FCB68004232F6 /* Assets.xcassets */,
-				57F0CE37289FCB68004232F6 /* LaunchScreen.storyboard */,
+				57B1CCEA28C15199006736EF /* Resource */,
 				57F0CE3A289FCB68004232F6 /* Info.plist */,
 				57CA182728DCBCCA00D3D28D /* GoogleService-Info.plist */,
 				570580282B4FB9B3005FAAEB /* .gitignore */,
@@ -1262,32 +1258,6 @@
 				57F536F628F1C5F900B54BAD /* ReviewWriteViewController.swift */,
 			);
 			path = ViewController;
-			sourceTree = "<group>";
-		};
-		57F536F828F1C71300B54BAD /* MainFlow */ = {
-			isa = PBXGroup;
-			children = (
-				57850E3428D7878600ADBBE7 /* BusinessTypeSelect */,
-				57850E3528D787B300ADBBE7 /* StoreSelect */,
-				57850E3628D787BB00ADBBE7 /* StoreInfo */,
-			);
-			path = MainFlow;
-			sourceTree = "<group>";
-		};
-		57F536F928F1C74100B54BAD /* SideFlow */ = {
-			isa = PBXGroup;
-			children = (
-				57CA184D28E221DA00D3D28D /* My */,
-				57F710EC2963ABB400A2EFE8 /* MyChange */,
-				57CA183928DCE6EB00D3D28D /* Login */,
-				57E90A5528E3CCDA00D5514B /* UserCreate */,
-				57F4BEB028E6EE4F00D4B159 /* Search */,
-				57CA183C28DEA02700D3D28D /* Jjim */,
-				57DEDEEA29354D990082673D /* UserReview */,
-				57E952022981B89F000CC40D /* StoreReview */,
-				57F536F128F1C12800B54BAD /* ReviewWrite */,
-			);
-			path = SideFlow;
 			sourceTree = "<group>";
 		};
 		57F710EC2963ABB400A2EFE8 /* MyChange */ = {
@@ -1580,7 +1550,7 @@
 				57E0AF4928F4870E00ADE562 /* ReviewWriteModel.swift in Sources */,
 				576F7B81292E681C00C79E19 /* BusinessTypeCell.swift in Sources */,
 				57FCB42B2915613C00CCEA52 /* LoginViewModel.swift in Sources */,
-				57E4FABC291EB9C4003E9508 /* StandardViewModel.swift in Sources */,
+				57E4FABC291EB9C4003E9508 /* NetworkManager.swift in Sources */,
 				5744BEC229537B8000ACCC65 /* ContainerUserReview.swift in Sources */,
 				57E4FAB0291E7E77003E9508 /* StoreInfoTableView.swift in Sources */,
 				57E90A5D28E3CFB200D5514B /* UserCreateViewModel.swift in Sources */,
@@ -1642,7 +1612,6 @@
 				578B65832981B9EF00B35C2F /* StoreReviewModel.swift in Sources */,
 				57C540B52901DCB40075C5AE /* UserReview.swift in Sources */,
 				57E95201298169AB000CC40D /* StoreReviewImageCell.swift in Sources */,
-				576F7B83292E752A00C79E19 /* BusinessTypeSelectViewModel.swift in Sources */,
 				57D45A32295DB9C0004941B8 /* Alert.swift in Sources */,
 				5744BEBE29535BE000ACCC65 /* UserReviewCellDelegate.swift in Sources */,
 				57CA185428E2222C00D3D28D /* Cell2.swift in Sources */,
@@ -1654,7 +1623,6 @@
 				578B65912982051F00B35C2F /* StoreContentCell.swift in Sources */,
 				57D72189296907750036B897 /* ReviewDelete.swift in Sources */,
 				57CA185828E2223E00D3D28D /* Cell4.swift in Sources */,
-				576F7B85292E756C00C79E19 /* BusinessTypeSeletModel.swift in Sources */,
 				57E7614C292456930057B9C0 /* StoreReview.swift in Sources */,
 				57C9465029203CC100A4CE90 /* StoreInfoStackView3.swift in Sources */,
 				57CA183E28DEA04100D3D28D /* JjimTableViewCell.swift in Sources */,

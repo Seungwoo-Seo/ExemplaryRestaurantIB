@@ -19,7 +19,7 @@ class LodingView: UIView {
     }()
     
 
-    let vm = StandardViewModel.shared
+    let vm = NetworkManager.shared
     
     
     override init(frame: CGRect) {

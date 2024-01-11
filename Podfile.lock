@@ -1,20 +1,16 @@
 PODS:
   - lottie-ios (3.4.0)
-  - RxSwift (6.5.0)
 
 DEPENDENCIES:
   - lottie-ios
-  - RxSwift (= 6.5.0)
 
 SPEC REPOS:
   trunk:
     - lottie-ios
-    - RxSwift
 
 SPEC CHECKSUMS:
   lottie-ios: 69495122151a378fdc7d1bb4c5930347e37baf1f
-  RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
 
-PODFILE CHECKSUM: 8a47cecb04458d292bd9b495f14e3502f376510d
+PODFILE CHECKSUM: 64673c55857ec1a4e8fcec4e01cd2cc8dca4780f
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.13.0
