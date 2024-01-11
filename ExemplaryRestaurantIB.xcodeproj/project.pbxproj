@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1947C30A53EA6BC4D80A3518 /* Pods_ExemplaryRestaurantIB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80951AB4A7F02C6802885FAD /* Pods_ExemplaryRestaurantIB.framework */; };
+		570580292B4FB9B3005FAAEB /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 570580282B4FB9B3005FAAEB /* .gitignore */; };
 		57183C3028AEBEF500A1BA03 /* Tabman in Frameworks */ = {isa = PBXBuildFile; productRef = 57183C2F28AEBEF500A1BA03 /* Tabman */; };
 		57183C3228AEC51300A1BA03 /* StoreSelectTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57183C3128AEC51300A1BA03 /* StoreSelectTabViewController.swift */; };
 		57183C3528AED20500A1BA03 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 57183C3428AED20500A1BA03 /* SnapKit */; };
@@ -160,6 +161,7 @@
 
 /* Begin PBXFileReference section */
 		1C96F36A2E8025E7A6B8135F /* Pods-ExemplaryRestaurantIB.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExemplaryRestaurantIB.debug.xcconfig"; path = "Target Support Files/Pods-ExemplaryRestaurantIB/Pods-ExemplaryRestaurantIB.debug.xcconfig"; sourceTree = "<group>"; };
+		570580282B4FB9B3005FAAEB /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		57183C3128AEC51300A1BA03 /* StoreSelectTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreSelectTabViewController.swift; sourceTree = "<group>"; };
 		57183C3E28B5957600A1BA03 /* StoreSelectViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreSelectViewCell.swift; sourceTree = "<group>"; };
 		57183C3F28B5957600A1BA03 /* StoreSelectViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StoreSelectViewCell.xib; sourceTree = "<group>"; };
@@ -1145,6 +1147,7 @@
 				57F0CE37289FCB68004232F6 /* LaunchScreen.storyboard */,
 				57F0CE3A289FCB68004232F6 /* Info.plist */,
 				57CA182728DCBCCA00D3D28D /* GoogleService-Info.plist */,
+				570580282B4FB9B3005FAAEB /* .gitignore */,
 			);
 			path = ExemplaryRestaurantIB;
 			sourceTree = "<group>";
@@ -1485,6 +1488,7 @@
 				57183F8B28BA543800A1BA03 /* copyright.png in Resources */,
 				57183F9928BA543800A1BA03 /* map_present.png in Resources */,
 				57183F9128BA543800A1BA03 /* map_pin_red.png in Resources */,
+				570580292B4FB9B3005FAAEB /* .gitignore in Resources */,
 				57183F9D28BA543800A1BA03 /* map_pin_shadow.png in Resources */,
 				57183F8628BA543800A1BA03 /* map_pinup.png in Resources */,
 				57183F8D28BA543800A1BA03 /* map_pin_red@3x.png in Resources */,
