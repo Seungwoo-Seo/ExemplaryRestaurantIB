@@ -101,11 +101,6 @@ class BusinessTypeSelectViewController: UIViewController {
         removeNotification()
     }
 
-    @objc func fetchDataCompleted() {
-        self.createModel_businessTypeList()
-        collectionView.reloadData()
-    }
-    
     // MARK: actions
     @IBAction func didTapMyButton(_ sender: UIBarButtonItem) {
         guard let vc = storyboard?.instantiateViewController(withIdentifier: "MyViewController") as? MyViewController else {return}
@@ -377,6 +372,11 @@ private extension BusinessTypeSelectViewController {
             name: NSNotification.Name("fetchDataCompleted"),
             object: nil
         )
+    }
+
+    @objc func fetchDataCompleted() {
+        self.createModel_businessTypeList()
+        collectionView.reloadData()
     }
 
     func removeNotification() {
