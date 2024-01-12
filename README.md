@@ -46,36 +46,38 @@
 - **찜**
 - **찜 내역**: 내가 찜한 모범음식점 모아보기 기능
 - **리뷰 남기기**: 별점, 사진, 텍스트로 리뷰 남기기 기능
-- **리뷰 내역**: 내가 남긴 리뷰 내역 모아보기 기능
+- **리뷰 내역**: 내가 남긴 리뷰 내역 모아보기 및 삭제 기능
 - **이메일 회원가입**
 - **회원정보 수정**: 이름, 비밀번호 수정 기능
 - **회원탈퇴**
 - **계정찾기**
 
 ## 💻 개발 환경 및 기술 스택
+
+<!--
 - Swift
 - Xcode
 - MVC
-- Storyboard, CodeBaseUI
+- UIKit, Storyboard, CodeBase UI, AutoLayout, SnapKit
 - URLSession
 - FirebaseRealtimeDataBase
 - FirebaseStorage
 - FirebaseAuthentication
-- UIKit, PhotosUI, PromiseKit, Cosmos, SnapKit, SwiftyJSON, Kingfisher, Tabman 
+- PhotosUI, PromiseKit, Cosmos, , SwiftyJSON, Kingfisher, Tabman 
 - CocoaPods, SPM
+-->
 
-<!--
 - **언어**: Swift
 - **IDE**: Xcode
 - **디자인 패턴**: MVC
-- **UI**: Storyboard, CodeBaseUI
+- **UI**: Storyboard, CodeBase UI, AutoLayout
 - **네트워크**: URLSession
 - **데이터베이스**: FirebaseRealtimeDataBase
 - **저장소**: FirebaseStorage
 - **인증**: FirebaseAuthentication
 - **라이브러리 및 프레임워크**: UIKit, PhotosUI, PromiseKit, Cosmos, SnapKit, SwiftyJSON, Kingfisher, Tabman 
 - **의존성 관리**: CocoaPods, SPM
--->
+
 
 <!--
 ![Swift](https://img.shields.io/badge/Swift-FA7343?style=flat&logo=swift&logoColor=white)
@@ -304,12 +306,12 @@ func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath:
 
 👍 성취한 점
 1. **독학으로 생애 첫 프로젝트 도전 성공**</br>
-swift 문법 책 하나만 읽고 오롯히 혼자서 구현해낸 첫 프로젝트입니다. 하나부터 열까지 모든 걸 혼자서 학습하고 구현했기 때문에 생각보다 많은 시간이 걸렸지만 결국 왔고, 봤고, 해냈습니다. 뭐든지 시작이 중요한만큼 첫 발을 디뎠고 이번 시행착오를 토대로 이후엔 보다 발전할 수 있겠다라는 자신감을 얻었습니다.
+swift 문법 책 하나만 읽고 오롯히 혼자서 구현해낸 첫 프로젝트입니다. 모든 걸 혼자서 학습하고 구현했기 때문에 생각보다 많은 시간이 걸렸지만 그런 순간들이 저에게는 소중한 성장의 계기가 되었습니다. 이번 시행착오를 통해 보다 발전할 수 있을 것이라는 자신감을 얻었습니다.
 
-2. **여러 문법과 개념 대한 이해**</br>
+3. **여러 문법과 개념 대한 이해**</br>
 그동안 전혀 와닿지 않던 문법과 개념들을 이해하게 되었습니다. @escaping closure, 비동기-동기, 데이터 파싱, Delegate Pattern 등 아예 감조차 잡지 못했던 개념 혹은 문법들을 직접 프로젝트를 구현해 보니 깨닫게 되었습니다.
 
-3. **다양한 라이브러리 및 프레임워크 활용**</br>
+4. **다양한 라이브러리 및 프레임워크 활용**</br>
 프로젝트를 효율적으로 개발하기 위해 다양한 라이브러리와 프레임워크를 활용해봤습니다. 이를 통해 개발 속도를 높이고 안정성을 확보했습니다. 특히, SnapKit, Kingfisher 등의 라이브러리를 통해 개발 생산성을 향상시켰습니다.
 
 🤔 개선할 점
@@ -317,7 +319,7 @@ swift 문법 책 하나만 읽고 오롯히 혼자서 구현해낸 첫 프로젝
 ViewController의 코드 라인이 많아질수록 점점 유지 보수하기도 힘들고 수정도 용이하지 않았습니다. 좀 더 발전된 디자인 패턴의 필요성을 느꼈습니다.
 
 2. **지역구 별 음식점 종류 선택화면에 잘못된 기획**</br>
-모음의 메인화면인 지역구 별 음식점 종류 선택화면은 기획적으론 괜찮지만 각 지역구에 해당하는 API들이 전부 다르기 때문에 해당 화면을 구현하기 위해선 너무 많은 데이터를 필요로 했습니다. 개발적 관점으로 봤을 땐 지역구 별 음식점 종류를 선택하는게 아니라 지역구를 선택하는 방향으로 진행했다면 불필요한 API 호출을 줄일 수 있었을 것 같습니다.
+모음의 메인화면인 지역구 별 음식점 종류 선택 화면은 기획적으론 괜찮지만 각 지역구에 해당하는 API들이 전부 다르기 때문에 해당 화면을 구현하기 위해선 너무 많은 데이터를 필요로 했습니다. 개발적 관점으로 봤을 땐 지역구 별 음식점 종류를 선택하는 게 아니라 지역구를 선택하는 방향으로 진행했다면 불필요한 API 호출을 줄일 수 있었을 것 같습니다.
 
 ## 🖼 아이콘 출처 및 저작권 정보
 
