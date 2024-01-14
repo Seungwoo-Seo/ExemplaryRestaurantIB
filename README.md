@@ -31,12 +31,12 @@
 
 ## 🚀 주요 기능
 
-- **서울시 00구 모범음식점 지정 현황 API(25개)를 기반으로 모범음식점 탐색 및 검색 기능 구현**
-- **DispatchGroup과 PromiseKit을 활용해 비동기 로직을 동기적으로 구현**
-- **Kakao Map 기반으로 모범음식점 위치 탐색 기능 구현**
-- **Firebase RealtimeDataBase를 기반으로 찜 추가, 삭제 및 찜 내역 확인 기능 구현**
-- **Firebase RealtimeDataBase와 Firebase Storage를 기반으로 리뷰 남기기(별점, 사진, 텍스트), 리뷰 삭제, 리뷰 보기 기능 구현**
-- **Firebase Authentication을 기반으로 이메일 회원가입, 로그인, 탈퇴, 계정 찾기 기능 구현**
+- 서울시 00구 모범음식점 지정 현황 API(25개)를 기반으로 모범음식점 탐색 및 검색 기능 구현
+- DispatchGroup과 PromiseKit을 활용해 비동기 로직을 동기적으로 구현
+- Kakao Map 기반으로 모범음식점 위치 탐색 기능 구현
+- Firebase RealtimeDataBase를 기반으로 찜 추가, 삭제 및 찜 내역 확인 기능 구현
+- Firebase RealtimeDataBase와 Firebase Storage를 기반으로 리뷰 남기기(별점, 사진, 텍스트), 리뷰 삭제, 리뷰 보기 기능 구현
+- Firebase Authentication을 기반으로 이메일 회원가입, 로그인, 탈퇴, 계정 찾기 기능 구현
 
 ## 💻 기술 스택
 
