@@ -10,7 +10,6 @@
   모음은 서울시에서 지정한 일반음식점 및 집단급식소 중 위생관리 및 고객 서비스 수준이 우수한 업소를 찾아볼 수 있는 서비스입니다.
 </p>
 
-  
 <p align="center">
   <img src="https://github.com/Seungwoo-Seo/ExemplaryRestaurantIB/assets/72753868/f7674e21-7dab-4d82-b0f3-17434679f683" width="130">
   <img src="https://github.com/Seungwoo-Seo/ExemplaryRestaurantIB/assets/72753868/e50718e4-8afc-4c1d-bbce-ef2a8aca5024" width="130">
@@ -22,62 +21,40 @@
 
 ## 목차
 
-- [🤝 개발 인원](#-개발-인원)
-- [⏰ 개발 기간](#-개발-기간) 
-- [🚀 주요 기능](#-주요-기능) 
-- [💻 개발 환경 및 기술 스택](#-개발-환경-및-기술-스택)
+- [🚀 주요 기능](#-주요-기능)
+- [💻 기술 스택](#-기술-스택)
+- [📱 서비스](#-서비스)
 - [🚧 기술적 도전](#-기술적-도전)
 - [🛠 트러블 슈팅](#-트러블-슈팅)
 - [📝 회고](#-회고)
 - [🖼 아이콘 출처 및 저작권 정보](#-아이콘-출처-및-저작권-정보)
 
-## 🤝 개발 인원
-
-- **인원**: 1인
-
-## ⏰ 개발 기간
-
-- 2022년 8월 ~ 2023년 2월 (6개월)
-
 ## 🚀 주요 기능
 
-- **모범음식점 검색**: 서울시 모범음식점 검색 기능
-- **지도 보기**: kakao지도로 모범음식점의 위치 탐색 기능
-- **찜**
-- **찜 내역**: 내가 찜한 모범음식점 모아보기 기능
-- **리뷰 남기기**: 별점, 사진, 텍스트로 리뷰 남기기 기능
-- **리뷰 내역**: 내가 남긴 리뷰 내역 모아보기 및 삭제 기능
-- **이메일 회원가입**
-- **회원정보 수정**: 이름, 비밀번호 수정 기능
-- **회원탈퇴**
-- **계정찾기**
+- **서울시 00구 모범음식점 지정 현황 API(25개)를 기반으로 모범음식점 탐색 및 검색 기능 구현**
+- **DispatchGroup과 PromiseKit을 활용해 비동기 로직을 동기적으로 구현**
+- **Kakao Map 기반으로 모범음식점 위치 탐색 기능 구현**
+- **Firebase RealtimeDataBase를 기반으로 찜 추가, 삭제 및 찜 내역 확인 기능 구현**
+- **Firebase RealtimeDataBase와 Firebase Storage를 기반으로 리뷰 남기기(별점, 사진, 텍스트), 리뷰 삭제, 리뷰 보기 기능 구현**
+- **Firebase Authentication을 기반으로 이메일 회원가입, 로그인, 탈퇴, 계정 찾기 기능 구현**
 
-## 💻 개발 환경 및 기술 스택
+## 💻 기술 스택
 
-<!--
-- Swift
-- Xcode
-- MVC
-- UIKit, Storyboard, CodeBase UI, AutoLayout, SnapKit
-- URLSession
-- FirebaseRealtimeDataBase
-- FirebaseStorage
-- FirebaseAuthentication
-- PhotosUI, PromiseKit, Cosmos, , SwiftyJSON, Kingfisher, Tabman 
-- CocoaPods, SPM
--->
+- 언어 : Swift
+- 디자인 패턴 : MVP, Singleton
+- UI : UIKit, Storyboard, CodeBase UI, AutoLayout, SnapKit
+- 네트워크 : URLSession
+- 데이터베이스 : Firebase RealtimeDataBase
+- 저장소 : Firebase Storage
+- 인증 : Firebase Authentication
+- 의존성 관리 : CocoaPods, SPM
+- 그 외 라이브러리 및 프레임워크 : PhotosUI, PromiseKit, Cosmos, SwiftyJSON, Kingfisher, Tabman
 
-- **언어**: Swift
-- **IDE**: Xcode
-- **디자인 패턴**: MVC
-- **UI**: Storyboard, CodeBase UI, AutoLayout
-- **네트워크**: URLSession
-- **데이터베이스**: FirebaseRealtimeDataBase
-- **저장소**: FirebaseStorage
-- **인증**: FirebaseAuthentication
-- **라이브러리 및 프레임워크**: UIKit, PhotosUI, PromiseKit, Cosmos, SnapKit, SwiftyJSON, Kingfisher, Tabman 
-- **의존성 관리**: CocoaPods, SPM
+## 📱 서비스
 
+- 최소 버전 : iOS 15.0
+- 개발 인원 : 1인
+- 개발 기간 : 2022년 8월 ~ 2023년 2월 (6개월)
 
 <!--
 ![Swift](https://img.shields.io/badge/Swift-FA7343?style=flat&logo=swift&logoColor=white)
