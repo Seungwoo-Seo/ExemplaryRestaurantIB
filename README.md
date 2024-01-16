@@ -1,14 +1,6 @@
 # 모음 - 서울 모범음식점 찾기
 
-<!--
-<p align="center">
-  <img src="https://your-banner-image-url.png" alt="ExemplaryRestaurantIB Logo" width="800">
-</p>
--->
-
-<p align="center">
-  모음은 서울시에서 지정한 일반음식점 및 집단급식소 중 위생관리 및 고객 서비스 수준이 우수한 업소를 찾아볼 수 있는 서비스입니다.
-</p>
+> 모음은 서울시 00구 모범음식점 지정 현황 API를 기반으로 서울시에서 지정한 일반음식점 및 집단급식소 중 위생관리 및 고객 서비스 수준이 우수한 업소를 찾아볼 수 있는 서비스입니다.
 
 <p align="center">
   <img src="https://github.com/Seungwoo-Seo/ExemplaryRestaurantIB/assets/72753868/f7674e21-7dab-4d82-b0f3-17434679f683" width="130">
@@ -22,33 +14,33 @@
 ## 목차
 
 - [🚀 주요 기능](#-주요-기능)
+- [🛠 구현 기술](#-구현-기술)
 - [💻 기술 스택](#-기술-스택)
 - [📱 서비스](#-서비스)
 - [🚧 기술적 도전](#-기술적-도전)
-- [🛠 트러블 슈팅](#-트러블-슈팅)
+- [🚨 트러블 슈팅](#-트러블-슈팅)
 - [📝 회고](#-회고)
 - [🖼 아이콘 출처 및 저작권 정보](#-아이콘-출처-및-저작권-정보)
 
 ## 🚀 주요 기능
 
-- 서울시 00구 모범음식점 지정 현황 API(25개)를 기반으로 모범음식점 탐색 및 검색 기능 구현
+- 모범음식점 목록 및 상세 정보 조회
+- Kakao Map 기반으로 모범음식점 위치 탐색
+- 찜 CRUD 및 리뷰 CRUD
+- 회원인증
+
+## 🛠 구현 기술
+
 - DispatchGroup과 PromiseKit을 활용해 비동기 로직을 동기적으로 구현
-- Kakao Map 기반으로 모범음식점 위치 탐색 기능 구현
-- Firebase RealtimeDataBase를 기반으로 찜 추가, 삭제 및 찜 내역 확인 기능 구현
-- Firebase RealtimeDataBase와 Firebase Storage를 기반으로 리뷰 남기기(별점, 사진, 텍스트), 리뷰 삭제, 리뷰 보기 기능 구현
-- Firebase Authentication을 기반으로 이메일 회원가입, 로그인, 탈퇴, 계정 찾기 기능 구현
 
 ## 💻 기술 스택
 
-- 언어 : Swift
-- 디자인 패턴 : MVP, Singleton
-- UI : UIKit, Storyboard, CodeBase UI, AutoLayout, SnapKit
-- 네트워크 : URLSession
-- 데이터베이스 : Firebase RealtimeDataBase
-- 저장소 : Firebase Storage
-- 인증 : Firebase Authentication
-- 의존성 관리 : CocoaPods, SPM
-- 그 외 라이브러리 및 프레임워크 : PhotosUI, PromiseKit, Cosmos, SwiftyJSON, Kingfisher, Tabman
+- Swift
+- MVP, Singleton
+- UIKit, PhotosUI,
+- URLSession, Storyboard, CodeBase UI, AutoLayout
+- SnapKit, PromiseKit, Cosmos, SwiftyJSON, Kingfisher, Tabman
+- Firebase
 
 ## 📱 서비스
 
@@ -130,7 +122,7 @@ PromiseKit을 도입하여 비동기 작업을 동기적으로 처리할 수 있
     }
 ~~~
 
-## 🛠 트러블 슈팅
+## 🚨 트러블 슈팅
 
 <!-- 프로젝트 중 발생한 문제와 그 해결 방법에 대한 내용을 기록한다. -->
 ### 1. 네트워크 응답 데이터 UI 바인딩 이슈
@@ -292,8 +284,6 @@ swift 문법 책 하나만 읽고 오롯히 혼자서 구현해낸 첫 프로젝
 프로젝트를 효율적으로 개발하기 위해 다양한 라이브러리와 프레임워크를 활용해봤습니다. 이를 통해 개발 속도를 높이고 안정성을 확보했습니다. 특히, SnapKit, Kingfisher 등의 라이브러리를 통해 개발 생산성을 향상시켰습니다.
 
 🤔 개선할 점
-1. **Massive View Controller**</br>
-ViewController의 코드 라인이 많아질수록 점점 유지 보수하기도 힘들고 수정도 용이하지 않았습니다. 좀 더 발전된 디자인 패턴의 필요성을 느꼈습니다.
 
 2. **지역구 별 음식점 종류 선택화면에 잘못된 기획**</br>
 모음의 메인화면인 지역구 별 음식점 종류 선택 화면은 기획적으론 괜찮지만 각 지역구에 해당하는 API들이 전부 다르기 때문에 해당 화면을 구현하기 위해선 너무 많은 데이터를 필요로 했습니다. 개발적 관점으로 봤을 땐 지역구 별 음식점 종류를 선택하는 게 아니라 지역구를 선택하는 방향으로 진행했다면 불필요한 API 호출을 줄일 수 있었을 것 같습니다.
