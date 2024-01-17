@@ -1,6 +1,6 @@
 # 모음 - 서울 모범음식점 찾기
 
-> 모음은 서울시 00구 모범음식점 지정 현황 API를 기반으로 서울시에서 지정한 일반음식점 및 집단급식소 중 위생관리 및 고객 서비스 수준이 우수한 업소를 찾아볼 수 있는 서비스입니다.
+> 모범음식점 지정 현황 API를 기반으로 서울시에서 지정한 일반음식점 및 집단급식소 중 위생관리 및 고객 서비스 수준이 우수한 업소를 찾아볼 수 있는 서비스입니다.
 
 <p align="center">
   <img src="https://github.com/Seungwoo-Seo/ExemplaryRestaurantIB/assets/72753868/f7674e21-7dab-4d82-b0f3-17434679f683" width="130">
@@ -26,21 +26,23 @@
 
 - 모범음식점 목록 및 상세 정보 조회
 - Kakao Map 기반으로 모범음식점 위치 탐색
-- 찜 CRUD 및 리뷰 CRUD
+- 찜 목록 및 리뷰 목록
 - 회원인증
 
 ## 🛠 구현 기술
 
-- DispatchGroup과 PromiseKit을 활용해 비동기 로직을 동기적으로 구현
+- `Bottom Sheet` 구현
+- `FirebaseRealtimeDatabase`를 활용해 `찜 CRUD`와 `리뷰 CRUD` 구현
+- `DispatchGroup`과 `PromiseKit`을 활용해 25개의 API 동기적 구현
 
 ## 💻 기술 스택
 
-- Swift
-- MVP, Singleton
-- UIKit, PhotosUI,
-- URLSession, Storyboard, CodeBase UI, AutoLayout
-- SnapKit, PromiseKit, Cosmos, SwiftyJSON, Kingfisher, Tabman
-- Firebase
+- `Swift`
+- `MVC`, `Singleton`
+- `UIKit`, `PhotosUI`,
+- `URLSession`, `Storyboard`, `CodeBase UI`, `AutoLayout`
+- `SnapKit`, `PromiseKit`, `Cosmos`, `SwiftyJSON`, `Kingfisher`, `Tabman`
+- `Firebase`
 
 ## 📱 서비스
 
@@ -77,8 +79,8 @@
 - **도전 상황**</br>
 여러 API를 차례대로 사용해서 각 요청에 대한 응닶 값을 기반으로 순서대로 로직을 처리했을 때 콜백 지옥이 되는 현상을 개선하고 싶었습니다.
 
-- **해결 방법**</br>
-PromiseKit을 도입하여 비동기 작업을 동기적으로 처리할 수 있게 되었고 콜백 지옥을 개선할 수 있었습니다.
+- **도전 결과**</br>
+`PromiseKit`을 도입하여 비동기 작업을 동기적으로 처리할 수 있게 되었고 콜백 지옥을 개선할 수 있었습니다.
 ~~~swift
     func fetchStoreInfo(completionHandler: @escaping (UIAlertController?) -> ()) {
         navigationController?.isNavigationBarHidden = true
@@ -131,8 +133,8 @@ PromiseKit을 도입하여 비동기 작업을 동기적으로 처리할 수 있
 
 - **해결 방법**</br>
 UI가 화면에 보여지고 데이터를 받게 되어서 UI에 반영되지 않았다는 걸 알게 되었고 비동기, 동기에 대한 개념을 학습했습니다.</br>
-UI가 화면에 보여지는 시점보다 나중에 데이터를 받아도 UI에 바인딩 할 수 있게 Notification을 적용했습니다.</br>
-또, 여러 API에 응답값을 동시에 사용해야 하기 때문에 DispatchGroup을 사용해서 비동기 작업들을 동기적으로 처리했습니다.
+UI가 화면에 보여지는 시점보다 나중에 데이터를 받아도 UI에 바인딩 할 수 있게 `Notification`을 적용했습니다.</br>
+또, 여러 API에 응답값을 동시에 사용해야 하기 때문에 `DispatchGroup`을 사용해서 비동기 작업들을 동기적으로 처리했습니다.
 ~~~swift
 func fetchData() {
     let group = DispatchGroup()
@@ -232,7 +234,7 @@ func fetchData() {
 tableViewCell에 지도를 넣고 싶었지만 지도도 결국 ScrollView를 기반으로 구현됬기 때문에 ScrollView가 중첩되어서 유저 이벤트가 제대로 동작하지 않았습니다.
 
 - **해결 방법**</br>
-UITableView를 상속받는 사용자 정의 TableView를 만들고 touchesShouldCancel 메서드를 오버라이딩하여 해결했습니다.
+UITableView를 상속받는 사용자 정의 TableView를 만들고 `touchesShouldCancel` 메서드를 오버라이딩하여 해결했습니다.
 ~~~swift
 class StoreInfoTableView: UITableView {
 
@@ -253,7 +255,7 @@ class StoreInfoTableView: UITableView {
 이미지 로딩이 느린 경우에 이미지가 보여지지 않거나 제대로 보여지지 않았습니다. 또, 컬렉션 뷰 셀이 재사용되는 특성상, 스크롤 시 이미지가 올바른 행에 표시되지 않았습니다.
 
 - **해결 방법**</br>
-Kingfisher 라이브러리를 도입하여 매우 간단하게 비동기 이미지 다운로드, 캐시 관리, 비동기적 이미지 셋팅을 해결했습니다.
+`Kingfisher` 라이브러리를 도입하여 매우 간단하게 비동기 이미지 다운로드, 캐시 관리, 비동기적 이미지 셋팅을 해결했습니다.
 ~~~swift
 func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "UserReviewImageCell", for: indexPath) as? UserReviewImageCell,
@@ -269,24 +271,16 @@ func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath:
 ~~~
 
 ## 📝 회고
-
 <!-- 프로젝트를 마무리하면서 느낀 소회, 개선점, 다음에 시도해보고 싶은 것 등을 정리한다. -->
-프로젝트를 마무리하면서 몇 가지 느낀 점과 개선할 사항들을 회고로 정리하겠습니다.
-
 👍 성취한 점
-1. **독학으로 생애 첫 프로젝트 도전 성공**</br>
-swift 문법 책 하나만 읽고 오롯히 혼자서 구현해낸 첫 프로젝트입니다. 모든 걸 혼자서 학습하고 구현했기 때문에 생각보다 많은 시간이 걸렸지만 그런 순간들이 저에게는 소중한 성장의 계기가 되었습니다. 이번 시행착오를 통해 보다 발전할 수 있을 것이라는 자신감을 얻었습니다.
-
-3. **여러 문법과 개념 대한 이해**</br>
-그동안 전혀 와닿지 않던 문법과 개념들을 이해하게 되었습니다. @escaping closure, 비동기-동기, 데이터 파싱, Delegate Pattern 등 아예 감조차 잡지 못했던 개념 혹은 문법들을 직접 프로젝트를 구현해 보니 깨닫게 되었습니다.
-
-4. **다양한 라이브러리 및 프레임워크 활용**</br>
-프로젝트를 효율적으로 개발하기 위해 다양한 라이브러리와 프레임워크를 활용해봤습니다. 이를 통해 개발 속도를 높이고 안정성을 확보했습니다. 특히, SnapKit, Kingfisher 등의 라이브러리를 통해 개발 생산성을 향상시켰습니다.
+1. API 응답 데이터를 UI에 반영하는 로직을 구현하다 보니 `@escaping closure`와, `비동기-동기`에 대한 개념을 자연스럽게 학습할 수 있었습니다.
+2. custom view를 직접 만들어서 viewController와 통신을 구현하다 보니 `Delegate Pattern`에 대해서 자연스럽게 학습할 수 있었습니다.
+3. [🚨 트러블 슈팅 #3](###-3.-CollectionViewCell에-비동기적으로-이미지를-로드하고-적용하는-동안-이미지-캐싱을-사용하지-않았을-때-이슈)을 통해 `Kingfisher` 라이브러리의 장점을 경험했습니다.
+4. `Storyboard`로 구현하기 어려웠던 view를 `CodeBase UI`로 구현하면서 `SnapKit` 라이브러리의 장점을 경험했습니다.
 
 🤔 개선할 점
-
-2. **지역구 별 음식점 종류 선택화면에 잘못된 기획**</br>
-모음의 메인화면인 지역구 별 음식점 종류 선택 화면은 기획적으론 괜찮지만 각 지역구에 해당하는 API들이 전부 다르기 때문에 해당 화면을 구현하기 위해선 너무 많은 데이터를 필요로 했습니다. 개발적 관점으로 봤을 땐 지역구 별 음식점 종류를 선택하는 게 아니라 지역구를 선택하는 방향으로 진행했다면 불필요한 API 호출을 줄일 수 있었을 것 같습니다.
+1. `모음`의 메인화면인 `지역구 별 음식점 종류 선택 화면`은 각 지역구에 해당하는 API들이 전부 다르기 때문에 해당 화면을 구현하기 위해선 너무 많은 데이터를 필요로 했습니다. 지역구 별 음식점 종류를 선택하는 게 아니라 지역구를 선택하는 방향으로 진행했다면 불필요한 API 호출을 줄일 수 있었을 것 같습니다.
+2. 하나의 ViewController에서 너무 많은 로직을 작성하다보니 필요한 메서드를 찾기도 힘들었고 여러 Flow를 관리하기도 힘들었습니다. `코드 분리`에 대한 필요성을 경험했으니 `MVP`, `MVVM` 패턴을 학습하고 적용해보겠습니다.
 
 ## 🖼 아이콘 출처 및 저작권 정보
 
