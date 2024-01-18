@@ -275,7 +275,7 @@ func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath:
 👍 성취한 점
 1. API 응답 데이터를 UI에 반영하는 로직을 구현하다 보니 `@escaping closure`와, `비동기-동기`에 대한 개념을 자연스럽게 학습할 수 있었습니다.
 2. custom view를 직접 만들어서 viewController와 통신을 구현하다 보니 `Delegate Pattern`에 대해서 자연스럽게 학습할 수 있었습니다.
-3. [🚨 트러블 슈팅 #3](#3.-CollectionViewCell에-비동기적으로-이미지를-로드하고-적용하는-동안-이미지-캐싱을-사용하지-않았을-때-이슈)을 통해 `Kingfisher` 라이브러리의 장점을 경험했습니다.
+3. [🚨 트러블 슈팅 #3](#3-collectionviewcell에-비동기적으로-이미지를-로드하고-적용하는-동안-이미지-캐싱을-사용하지-않았을-때-이슈)을 통해 `Kingfisher` 라이브러리의 장점을 경험했습니다.
 4. `Storyboard`로 구현하기 어려웠던 view를 `CodeBase UI`로 구현하면서 `SnapKit` 라이브러리의 장점을 경험했습니다.
 
 🤔 개선할 점
