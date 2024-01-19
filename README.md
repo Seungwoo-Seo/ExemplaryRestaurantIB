@@ -33,16 +33,17 @@
 
 - `Bottom Sheet` 구현
 - `FirebaseRealtimeDatabase`를 활용해 `찜 CRUD`와 `리뷰 CRUD` 구현
-- `DispatchGroup`과 `PromiseKit`을 활용해 25개의 API 동기적 구현
+- `FirebaseAuthentication`와 `FirebaseRealtimeDatabase`를 활용해 `유저 CRUD` 구현
+- `DispatchGroup`과 `PromiseKit`을 활용해 25개의 API 동기적 구현 --> 요거 애매하네잉
 
 ## 💻 기술 스택
 
 - `Swift`
 - `MVC`, `Singleton`
 - `UIKit`, `PhotosUI`,
-- `URLSession`, `Storyboard`, `CodeBase UI`, `AutoLayout`
-- `SnapKit`, `PromiseKit`, `Cosmos`, `SwiftyJSON`, `Kingfisher`, `Tabman`
-- `Firebase`
+- `Storyboard`, `CodeBase UI`, `AutoLayout`
+- `SnapKit`, `PromiseKit`, `Cosmos`, `SwiftyJSON`, `Kingfisher`, `Tabman`, `lottie-iOS`
+- `URLSession`, `Firebase`
 
 ## 📱 서비스
 
