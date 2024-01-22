@@ -31,23 +31,23 @@
 
 ## 🛠 구현 기능
 
+- API `응답 UI 바인딩` 구현
 - `Bottom Sheet` 구현
 - `OAuth 2.0` 기반 `이메일 로그인` 구현
 - FirebaseRealtimeDatabase를 활용해 `찜, 리뷰 CRUD` 구현
 - Kakao Map 기반 `지도` 및 `마커` 구현
-
+- ImagePicker 기반 `카메라` 및 `권한 인증` 구현
+- PHPicker 기반 `이미지 load` 구현
   
-- `DispatchGroup`과 `PromiseKit`을 활용해 25개의 API 동기적 구현 --> 요거 애매하네잉
-
-
 ## 💻 기술 스택
 
 - `Swift`
 - `MVC`, `Singleton`
 - `UIKit`, `PhotosUI`,
 - `Storyboard`, `CodeBase UI`, `AutoLayout`
-- `SnapKit`, `PromiseKit`, `Cosmos`, `SwiftyJSON`, `Kingfisher`, `Tabman`, `lottie-iOS`
-- `URLSession`, `Firebase`
+- `URLSession`
+- `SwiftyJSON`, `PromiseKit`, `SnapKit`, `Cosmos`, `Kingfisher`, `Tabman`, `lottie-iOS`
+- `Firebase`
 
 ## 📱 서비스
 
