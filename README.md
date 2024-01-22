@@ -29,12 +29,16 @@
 - 찜, 리뷰
 - 회원인증
 
-## 🛠 구현 기술
+## 🛠 구현 기능
 
 - `Bottom Sheet` 구현
-- `FirebaseRealtimeDatabase`를 활용해 `찜 CRUD`와 `리뷰 CRUD` 구현
-- `FirebaseAuthentication`와 `FirebaseRealtimeDatabase`를 활용해 `유저 CRUD` 구현
+- `OAuth 2.0` 기반 `이메일 로그인` 구현
+- FirebaseRealtimeDatabase를 활용해 `찜, 리뷰 CRUD` 구현
+- Kakao Map 기반 `지도` 및 `마커` 구현
+
+  
 - `DispatchGroup`과 `PromiseKit`을 활용해 25개의 API 동기적 구현 --> 요거 애매하네잉
+
 
 ## 💻 기술 스택
 
