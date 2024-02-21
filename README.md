@@ -37,14 +37,14 @@
 
 ## 💻 핵심 설명
 
-- Firebase Auth, Firebase RealtimeDatabase 를 활용해 OAuth 2.0 기반  이메일 회원인증 구현
-- URLSession 을 사용해 REST API 통신 구현
-- DispatchGroup, SwiftyJSON, Notification 을 활용해 25개 API 응답값 핸들링
-- Firebase RealtimeDatabase, Firebase Storage 를 활용해 찜, 리뷰 CRUD 를 구현
-- 지역구를 선택하기 위한 BottomSheet 구현, Delegate Pattern 을 통해 ViewController 와의 통신 구현
-- Kakao Maps SDK, CLGeocoder 를 사용하여 지도 및 마커 구현
-- ImagePicker 를 사용해 카메라 구현, 촬영한 사진을 앨범에 저장하기 위해서 권한 인증 구현
-- PHPicker 를 사용해 미리 저장된 이미지 load 구현
+- Firebase Auth, Firebase RealtimeDatabase를 활용해 OAuth 2.0 기반 `이메일 회원 인증` 구현
+- URLSession을 사용해 `REST API` 통신 구현
+- DispatchGroup, SwiftyJSON, Notification을 활용해 `25개 API 응답 값 핸들링`
+- Firebase RealtimeDatabase, Firebase Storage를 활용해 찜, 리뷰 CRUD를 구현
+- 지역구를 선택하기 위한 `BottomSheet` 구현, Delegate Pattern을 통해 `ViewController와의 통신` 구현
+- Kakao Maps SDK, CLGeocoder를 사용하여 `지도` 및 `마커` 구현
+- ImagePicker를 사용해 카메라 구현, 촬영한 사진을 앨범에 저장하기 위해서 `권한 인증` 구현
+- PHPicker를 사용해 `미리 저장된 이미지 load` 구현
 
 
 ## 🚨 트러블 슈팅
