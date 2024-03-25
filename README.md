@@ -28,7 +28,7 @@
 ## 🛠 사용 기술
 
 - Swift
-- Foundation, UIKit, PhotosUI, CoreLocation
+- UIKit, PhotosUI, CoreLocation
 - MVC, Singleton, Delegate Pattern
 - SwiftyJSON, PromiseKit, SnapKit, Cosmos, Kingfisher, Tabman, Lottie
 - Storyboard, CodeBaseUI, AutoLayout, URLSession, PHPicker, ImagePicker, CLGeocoder
@@ -39,12 +39,12 @@
 
 - Firebase Auth, Firebase RealtimeDatabase를 활용해 OAuth 2.0 기반 `이메일 회원 인증` 구현
 - URLSession을 사용해 `REST API` 통신 구현
-- DispatchGroup, SwiftyJSON, Notification을 활용해 `25개 API 응답 값 핸들링`
-- Firebase RealtimeDatabase, Firebase Storage를 활용해 찜, 리뷰 CRUD를 구현
-- 지역구를 선택하기 위한 `BottomSheet` 구현, Delegate Pattern을 통해 `ViewController와의 통신` 구현
-- Kakao Maps SDK, CLGeocoder를 사용하여 `지도` 및 `마커` 구현
-- ImagePicker를 사용해 카메라 구현, 촬영한 사진을 앨범에 저장하기 위해서 `권한 인증` 구현
-- PHPicker를 사용해 `미리 저장된 이미지 load` 구현
+- DispatchGroup을 사용하여 25개의 구 정보 `API 호출` 처리 및 Notification을 활용한 일괄 UI 업데이트 적용
+- Firebase RealtimeDatabase, Firebase Storage를 활용해 `찜, 리뷰 CRUD`를 구현
+- BottomSheet에서 설정한 지역구 데이터를 Delegate를 활용하여 `역 값전달` 구현
+- Kakao Maps SDK, CLGeocoder를 사용하여 `위치정보`에 따른 Custom Annotation 구현
+- ImagePicker를 활용하여 촬영한 사진 데이터를 앨범에 `저장 기능` 구현 및 `권한 인증` 설정
+- PHPicker를 사용하여 갤러리에 저장된 이미지를 `불러오기` 기능 구현
 
 
 ## 🚨 트러블 슈팅
@@ -52,10 +52,10 @@
 <!-- 프로젝트 중 발생한 문제와 그 해결 방법에 대한 내용을 기록한다. -->
 ### 1. 모범음식점 지정 현황 API에 요청 후 응답 받은 데이터를 파싱까지 성공했지만 UI에 적용되지 않았던 이슈
 - **문제 원인**</br>
-동시성에 대한 개념 미인지로 인해 파싱한 데이터를 View가 사용하는 배열에 추가만 하고 UI 업데이트 로직을 구현하지 않은 상황이 원인
+파싱한 데이터를 View가 사용하는 배열에 추가만 하고 UI 업데이트 로직을 구현하지 않은 상황이 원인
 
 - **해결 방법**</br>
-동시성에 대해 학습, DispatchGroup을 사용해 응답값이 모였을 때 Notification으로 UI 업데이트 메서드 호출해서 해결
+여러 API를 호출해야 하는 상황에서 발생한 동시성 이슈를 파악하고, DispatchGroup을 통해 모든 Network 응답을 처리하여 끝나는 시점 파악 및 Notifiaction을 활용하여 일괄 UI 업데이트
 ~~~swift
 func fetchData() {
     let group = DispatchGroup()
@@ -169,8 +169,9 @@ class StoreInfoTableView: UITableView {
 }
 ~~~
 
+<!--
 ## 📝 회고
-<!-- 프로젝트를 마무리하면서 느낀 소회, 개선점, 다음에 시도해보고 싶은 것 등을 정리한다. -->
 - 동시성에 대해서 학습
 - 콜백 지옥을 경험
 - ViewController가 커질수록 관리하기 힘들었고, 필요한 메서드를 찾고 유지보수 하기 힘들다는 것을 경험
+-->
